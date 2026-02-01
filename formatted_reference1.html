@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>참고자료 #1 - 사용료 정산 매뉴얼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: #4B5563;
+            background: #F9FAFB;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .doc-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .doc-subtitle {
+            font-size: 14px;
+            color: #9CA3AF;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: 700;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subsection-header {
+            background: #EFF6FF;
+            color: #1E40AF;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3B82F6;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            padding: 20px;
+            background: #F9FAFB;
+            border-radius: 6px;
+        }
+
+        .flow-step {
+            background: white;
+            border: 2px solid #3B82F6;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1E40AF;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .flow-arrow {
+            color: #3B82F6;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .step-box {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #3B82F6;
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 15px;
+            margin-right: 12px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-content {
+            padding-left: 40px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #4B5563;
+        }
+
+        .example-box {
+            background: #F3F4F6;
+            border-left: 4px solid #9CA3AF;
+            padding: 12px 16px;
+            margin: 12px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .warning-box {
+            background: #FEF2F2;
+            border-left: 4px solid #EF4444;
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .warning-title {
+            font-weight: 700;
+            color: #991B1B;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box {
+            background: #ECFDF5;
+            border-left: 4px solid #10B981;
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .info-title {
+            font-weight: 700;
+            color: #065F46;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reference-list {
+            background: #FFFBEB;
+            border: 1px dashed #F59E0B;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .reference-list-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .reference-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .reference-list li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: #78350F;
+            font-size: 14px;
+        }
+
+        .reference-list li:before {
+            content: "📎";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+        }
+
+        .highlight {
+            background: #FEF3C7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .strong {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
+
+            .flow-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="doc-title">📄 참고자료 #1</h1>
+        <p class="doc-subtitle">도너스 사용료 정산 매뉴얼 (후보자 제공용)</p>
+
+        <!-- 개요 -->
+        <div style="padding: 16px; background: #EFF6FF; border-radius: 6px; margin-bottom: 24px;">
+            <p style="font-size: 15px; line-height: 1.7; color: #1E40AF;">
+                도너스 사용료는 매월 아래 절차에 따라 산출·정산합니다.
+            </p>
+        </div>
+
+        <!-- 전체 흐름 -->
+        <div class="section-header">
+            <span>🔄</span>
+            <span>전체 흐름</span>
+        </div>
+
+        <div class="flow-container">
+            <div class="flow-step">① 고객 요청<br>상품 확인</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">② 구독 상품<br>현황 최신화</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">③ 기본 사용료<br>산출</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">④ 부가서비스<br>사용료 산출</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">⑤ 메시지<br>충전금 반영</div>
+        </div>
+
+        <!-- 상세 절차 -->
+        <div class="section-header">
+            <span>📝</span>
+            <span>상세 절차</span>
+        </div>
+
+        <!-- 1단계 -->
+        <div class="step-box">
+            <div class="step-title">
+                <span class="step-number">1</span>
+                <span>고객 요청 상품 확인</span>
+            </div>
+            <div class="step-content">
+                <p style="margin-bottom: 8px;">
+                    고객성공팀을 통해 접수된 상품 주문/변경 요청을 확인합니다.
+                </p>
+                <p style="font-size: 13px; color: #6B7280;">
+                    → 요청받은 상품 주문은 <span class="highlight">[요청이력]</span>에 기록합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 2단계 -->
+        <div class="step-box">
+            <div class="step-title">
+                <span class="step-number">2</span>
+                <span>구독 상품 현황 최신화</span>
+            </div>
+            <div class="step-content">
+                <p>
+                    <span class="highlight">[요청이력]</span>에 작성된 내용을 근거로
+                    고객별 구독 상품 현황을 최신화합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 3단계 -->
+        <div class="step-box">
+            <div class="step-title">
+                <span class="step-number">3</span>
+                <span>기본 사용료 산출</span>
+            </div>
+            <div class="step-content">
+                <p style="margin-bottom: 12px;">
+                    고객의 <span class="strong">구독기간(1개월 / 12개월)</span>에 맞춰
+                    구독 중인 상품 단가를 반영하여 사용료를 산출합니다.
+                </p>
+
+                <div class="example-box">
+                    <div class="example-title">💡 예시</div>
+                    <p style="margin-bottom: 6px;">
+                        A-1 상품 단가가 <span class="strong">1개월 10,000원</span> /
+                        <span class="strong">12개월 110,000원</span>일 경우:
+                    </p>
+                    <p style="font-size: 13px; padding-left: 12px;">
+                        → 고객이 <span class="highlight">1개월 구독</span>이면
+                        갱신 시 <span class="highlight">10,000원</span>을 청구합니다.
+                    </p>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-title">
+                        <span>⚠️</span>
+                        <span>중요 규칙</span>
+                    </div>
+                    <p style="font-size: 14px; line-height: 1.6;">
+                        구독기간 중 상품 주문이 발생한 경우, 해당 상품 사용료는
+                        <span class="strong">일단가 기준</span>으로 산출합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4단계 -->
+        <div class="step-box">
+            <div class="step-title">
+                <span class="step-number">4</span>
+                <span>부가서비스 사용료 산출</span>
+            </div>
+            <div class="step-content">
+                <p style="margin-bottom: 8px;">
+                    매월 집계된 <span class="strong">부가서비스 사용량</span>을 기준으로
+                    부가서비스 사용료를 산출합니다.
+                </p>
+                <p style="font-size: 13px; color: #6B7280;">
+                    → 부가서비스 사용료는 <span class="highlight">부가서비스 사용량 시트의 집계 영역</span>에서 확인합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 5단계 -->
+        <div class="step-box">
+            <div class="step-title">
+                <span class="step-number">5</span>
+                <span>메시지 충전금 반영</span>
+            </div>
+            <div class="step-content">
+                <p style="margin-bottom: 12px;">
+                    부가서비스 사용료 중 <span class="strong">메시지 사용료</span>는
+                    고객 요청에 따라 사전 충전이 가능합니다.
+                </p>
+                <p style="margin-bottom: 8px; font-size: 14px;">
+                    • 매월 메시지 사용료를 집계할 때 충전금이 반영됩니다.<br>
+                    • 충전금이 모두 소진될 경우, 메시지 사용료 차액은 당월에 청구됩니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 정산 규칙 -->
+        <div class="section-header">
+            <span>⚖️</span>
+            <span>정산 관련 규칙 (메시지 충전금)</span>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">
+                <span>💰</span>
+                <span>충전금 이월 규칙</span>
+            </div>
+            <p style="font-size: 14px; line-height: 1.7; margin-bottom: 12px;">
+                메시지 충전금은 매월 <span class="strong">남은 금액이 다음 달로 그대로 넘어갑니다</span>.
+            </p>
+            <div style="background: white; padding: 12px; border-radius: 4px; font-size: 13px;">
+                <p style="text-align: center; color: #065F46; font-weight: 600;">
+                    지난달 마지막 충전금 <span style="color: #EF4444;">(전월 기말)</span>
+                    = 이번 달 시작 충전금 <span style="color: #3B82F6;">(당월 기초)</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- 참고 데이터 -->
+        <div class="section-header">
+            <span>📊</span>
+            <span>참고 데이터</span>
+        </div>
+
+        <div class="reference-list">
+            <div class="reference-list-title">다음 데이터를 참조하세요:</div>
+            <ul>
+                <li><strong>[요청이력]</strong>: 고객 주문/변경 요청 기록</li>
+                <li><strong>[구독 상품 현황]</strong>: 고객별 현재 구독 상태</li>
+                <li><strong>[상품대장]</strong>: 상품 단가 정보</li>
+                <li><strong>부가서비스 사용량 시트</strong>: 부가서비스 사용량 및 월별 집계</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

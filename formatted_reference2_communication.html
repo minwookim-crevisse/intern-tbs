@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>참고자료 #3 - 광고집행담당자 소통 이력</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: #4B5563;
+            background: #F9FAFB;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .doc-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .doc-subtitle {
+            font-size: 14px;
+            color: #9CA3AF;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        .comm-card {
+            background: #FFFFFF;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .comm-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .comm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #E5E7EB;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .comm-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comm-badge {
+            display: inline-block;
+            background: #3B82F6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .comm-meta {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px 16px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #F9FAFB;
+            border-radius: 4px;
+        }
+
+        .meta-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6B7280;
+        }
+
+        .meta-value {
+            font-size: 13px;
+            color: #111827;
+        }
+
+        .comm-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #4B5563;
+        }
+
+        .greeting {
+            color: #6B7280;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .content-main {
+            margin: 16px 0;
+            padding: 16px;
+            background: #FFFBEB;
+            border-left: 4px solid #F59E0B;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            background: #FEF3C7;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin: 12px 0;
+            border: 1px solid #FDE68A;
+        }
+
+        .highlight-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .data-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 8px 0;
+        }
+
+        .data-list li {
+            padding: 6px 12px;
+            margin: 4px 0;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-label {
+            font-weight: 600;
+            color: #374151;
+            min-width: 100px;
+        }
+
+        .data-value {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-weight: 700;
+            color: #DC2626;
+        }
+
+        .number-highlight {
+            background: #DBEAFE;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #1E40AF;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #E5E7EB;
+            font-size: 14px;
+            color: #6B7280;
+            font-style: italic;
+        }
+
+        .important-notice {
+            background: #FEF2F2;
+            border: 2px solid #FCA5A5;
+            border-radius: 6px;
+            padding: 14px;
+            margin: 12px 0;
+        }
+
+        .important-icon {
+            color: #DC2626;
+            font-size: 18px;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
+
+            .comm-header {
+                flex-direction: column;
+            }
+
+            .comm-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="doc-title">📧 참고자료 #3</h1>
+        <p class="doc-subtitle">광고집행담당자 → 사업지원팀 소통 이력</p>
+
+        <!-- 이력 1 -->
+        <div class="comm-card">
+            <div class="comm-header">
+                <div class="comm-title">
+                    <span>📩</span>
+                    <span>이력 1</span>
+                </div>
+                <span class="comm-badge">선수금 잔액 안내</span>
+            </div>
+
+            <div class="comm-meta">
+                <span class="meta-label">📅 발신일:</span>
+                <span class="meta-value">03월 01일</span>
+                <span class="meta-label">👤 발신자:</span>
+                <span class="meta-value">광고집행담당자</span>
+                <span class="meta-label">👥 수신자:</span>
+                <span class="meta-value">사업지원팀</span>
+            </div>
+
+            <div class="comm-content">
+                <p class="greeting">사업지원팀 담당자님, 안녕하세요. 광고집행담당자입니다.</p>
+
+                <div class="content-main">
+                    <p style="margin-bottom: 12px;">
+                        지난 2월 사용료 청구 이후,
+                        <span class="strong" style="font-weight: 700; color: #111827;">
+                            BCD (고객명: 사단법인 BCD 재단)
+                        </span>의 선수금 잔액은
+                        <span class="number-highlight">8,656,853원</span>입니다.
+                    </p>
+
+                    <div class="important-notice">
+                        <p style="color: #991B1B; font-weight: 600; line-height: 1.7;">
+                            <span class="important-icon">⚠️</span>
+                            3월 사용료 청구 시, 해당 잔액을 제외한 금액에 대해 세금계산서 발행 부탁드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <p class="signature">
+                    감사합니다.<br>
+                    광고집행담당자 드림
+                </p>
+            </div>
+        </div>
+
+        <!-- 이력 2 -->
+        <div class="comm-card">
+            <div class="comm-header">
+                <div class="comm-title">
+                    <span>📩</span>
+                    <span>이력 2</span>
+                </div>
+                <span class="comm-badge" style="background: #10B981;">추가 입금 안내</span>
+            </div>
+
+            <div class="comm-meta">
+                <span class="meta-label">📅 발신일:</span>
+                <span class="meta-value">03월 15일</span>
+                <span class="meta-label">👤 발신자:</span>
+                <span class="meta-value">광고집행담당자</span>
+                <span class="meta-label">👥 수신자:</span>
+                <span class="meta-value">사업지원팀</span>
+            </div>
+
+            <div class="comm-content">
+                <p class="greeting">사업지원팀 담당자님, 안녕하세요. 광고집행담당자입니다.</p>
+
+                <div class="content-main">
+                    <p style="margin-bottom: 12px;">
+                        금일 기준으로
+                        <span class="strong" style="font-weight: 700; color: #111827;">
+                            BCD (고객명: 사단법인 BCD 재단)
+                        </span>에서
+                        <span class="number-highlight">10,000,000원</span>을
+                        추가 입금하였습니다.
+                    </p>
+
+                    <div class="important-notice">
+                        <p style="color: #991B1B; font-weight: 600; line-height: 1.7;">
+                            <span class="important-icon">⚠️</span>
+                            3월 사용료 청구 시, 기존 선수금 잔액과 금번 입금액을 반영하여 세금계산서 발행 부탁드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <p class="signature">
+                    감사합니다.<br>
+                    광고집행담당자 드림
+                </p>
+            </div>
+        </div>
+
+        <!-- 이력 3 -->
+        <div class="comm-card">
+            <div class="comm-header">
+                <div class="comm-title">
+                    <span>📩</span>
+                    <span>이력 3</span>
+                </div>
+                <span class="comm-badge" style="background: #8B5CF6;">3월 광고 데이터</span>
+            </div>
+
+            <div class="comm-meta">
+                <span class="meta-label">📅 발신일:</span>
+                <span class="meta-value">03월 31일</span>
+                <span class="meta-label">👤 발신자:</span>
+                <span class="meta-value">광고집행담당자</span>
+                <span class="meta-label">👥 수신자:</span>
+                <span class="meta-value">사업지원팀</span>
+            </div>
+
+            <div class="comm-content">
+                <p class="greeting">사업지원팀 담당자님, 안녕하세요. 광고집행담당자입니다.</p>
+
+                <div class="content-main">
+                    <p style="margin-bottom: 16px; font-weight: 600; color: #374151;">
+                        3월 기준 광고소재 제작 매출은 아래와 같습니다.
+                        <span style="color: #DC2626;">(아래 금액은 VAT 제외 금액입니다.)</span>
+                    </p>
+
+                    <div class="highlight-box">
+                        <div class="highlight-title">💰 3월 광고소재 제작 매출</div>
+                        <ul class="data-list">
+                            <li>
+                                <span class="data-label">광고소재 A:</span>
+                                <span class="data-value">1,890,000원</span>
+                            </li>
+                            <li>
+                                <span class="data-label">광고소재 B:</span>
+                                <span class="data-value">3,500,000원</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <p style="margin: 16px 0; font-weight: 600; color: #374151;">
+                        또한 3월 동안 집행한 광고 매체는 아래와 같습니다.
+                    </p>
+
+                    <div class="highlight-box">
+                        <div class="highlight-title">📺 3월 광고집행 매체</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
+                            <span style="background: white; padding: 6px 14px; border-radius: 16px; border: 2px solid #3B82F6; color: #1E40AF; font-weight: 600;">G사</span>
+                            <span style="background: white; padding: 6px 14px; border-radius: 16px; border: 2px solid #3B82F6; color: #1E40AF; font-weight: 600;">M사</span>
+                            <span style="background: white; padding: 6px 14px; border-radius: 16px; border: 2px solid #3B82F6; color: #1E40AF; font-weight: 600;">K사</span>
+                            <span style="background: white; padding: 6px 14px; border-radius: 16px; border: 2px solid #3B82F6; color: #1E40AF; font-weight: 600;">X사</span>
+                            <span style="background: white; padding: 6px 14px; border-radius: 16px; border: 2px solid #3B82F6; color: #1E40AF; font-weight: 600;">N사</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="signature">
+                    감사합니다.<br>
+                    광고집행담당자 드림
+                </p>
+            </div>
+        </div>
+
+        <!-- 요약 정보 -->
+        <div style="margin-top: 32px; padding: 20px; background: #EFF6FF; border-radius: 8px; border: 2px solid #3B82F6;">
+            <h3 style="font-size: 16px; font-weight: 700; color: #1E40AF; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <span>💡</span>
+                <span>핵심 정보 요약</span>
+            </h3>
+            <div style="display: grid; gap: 12px;">
+                <div style="background: white; padding: 12px; border-radius: 4px;">
+                    <span style="font-weight: 600; color: #374151;">선수금 잔액 (03.01):</span>
+                    <span style="margin-left: 8px; font-family: monospace; font-weight: 700; color: #DC2626;">8,656,853원</span>
+                </div>
+                <div style="background: white; padding: 12px; border-radius: 4px;">
+                    <span style="font-weight: 600; color: #374151;">추가 입금 (03.15):</span>
+                    <span style="margin-left: 8px; font-family: monospace; font-weight: 700; color: #059669;">+10,000,000원</span>
+                </div>
+                <div style="background: white; padding: 12px; border-radius: 4px;">
+                    <span style="font-weight: 600; color: #374151;">광고소재 매출 합계:</span>
+                    <span style="margin-left: 8px; font-family: monospace; font-weight: 700; color: #7C3AED;">5,390,000원 (VAT 별도)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

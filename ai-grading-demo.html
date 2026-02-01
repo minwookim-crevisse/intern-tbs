@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 채점 모듈 데모 - TBS 테스트 웹앱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+
+        .result.loading {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            display: block;
+        }
+
+        .result h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .result p {
+            margin-bottom: 5px;
+            line-height: 1.6;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .login-panel {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .login-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.admin {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-badge.candidate {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .status-badge.guest {
+            background: #6c757d;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI 채점 모듈 데모</h1>
+            <p>OpenRouter API (DeepSeek R1T2 Chimera) 연동 테스트</p>
+        </div>
+
+        <div class="content">
+            <!-- 로그인 패널 -->
+            <div class="login-panel">
+                <div class="login-status">
+                    <div>
+                        <strong>로그인 상태:</strong>
+                        <span class="status-badge guest" id="loginStatus">로그아웃</span>
+                        <span id="userName"></span>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="quickLogin('admin')" class="btn-success">관리자 로그인</button>
+                        <button onclick="quickLogin('jahyun')" class="btn-secondary">후보자 로그인</button>
+                        <button onclick="logout()" class="btn-danger">로그아웃</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API 키 설정 -->
+            <div class="section">
+                <h2>1️⃣ API 키 설정</h2>
+                <div class="form-group">
+                    <label for="apiKey">OpenRouter API 키</label>
+                    <input type="password" id="apiKey" placeholder="sk-or-v1-...">
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        💡 .env 파일의 키를 사용하려면 아래 버튼을 클릭하세요
+                    </small>
+                </div>
+                <div class="button-group">
+                    <button onclick="useEnvKey()">환경 변수 키 사용</button>
+                    <button onclick="validateKey()">키 검증</button>
+                    <button onclick="saveKeyToSession()">세션에 저장</button>
+                </div>
+                <div id="keyValidationResult" class="result"></div>
+            </div>
+
+            <!-- 채점 테스트 -->
+            <div class="section">
+                <h2>2️⃣ AI 채점 테스트</h2>
+
+                <div class="form-group">
+                    <label for="userId">후보자 ID</label>
+                    <select id="userId">
+                        <option value="jahyun">jahyun (홍자현)</option>
+                        <option value="candidate1">candidate1 (후보자1)</option>
+                        <option value="candidate2">candidate2 (후보자2)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="problemId">문제 번호</label>
+                    <select id="problemId">
+                        <option value="1">문제 1: SaaS 서비스 사용료 정산 오류 검수</option>
+                        <option value="2">문제 2: 미디어 사업 사용료 정산서 작성</option>
+                    </select>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>⚠️ 테스트 전 준비사항:</strong></p>
+                    <p>1. 관리자로 로그인하세요</p>
+                    <p>2. 후보자가 답안을 제출한 상태여야 합니다</p>
+                    <p>3. API 키를 입력하고 검증하세요</p>
+                </div>
+
+                <button onclick="performGrading()" style="width: 100%;">
+                    🚀 AI 채점 시작
+                </button>
+
+                <div id="gradingResult" class="result"></div>
+            </div>
+
+            <!-- 직접 답안 입력 테스트 -->
+            <div class="section">
+                <h2>3️⃣ 직접 답안 입력 테스트</h2>
+
+                <div class="form-group">
+                    <label for="directProblemId">문제 번호</label>
+                    <select id="directProblemId">
+                        <option value="1">문제 1</option>
+                        <option value="2">문제 2</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="directAnswer">후보자 답안 (텍스트)</label>
+                    <textarea id="directAnswer" placeholder="채점할 답안을 입력하세요...
+
+예시:
+[답안 1-1]
+오류 분석:
+1. 기본서비스 사용료: FR-0002 상품이 3월분에 누락됨
+2. 확장서비스: DQT-00001 일할 계산 오류
+3. 메시지 충전금: 전월 잔액 미반영
+
+수정 내역:
+- FR-0002: +50,000원
+- 메시지 충전금: 전월 잔액 반영
+..."></textarea>
+                </div>
+
+                <button onclick="performDirectGrading()" style="width: 100%;">
+                    🧪 직접 채점 테스트
+                </button>
+
+                <div id="directGradingResult" class="result"></div>
+            </div>
+
+            <!-- 디버깅 정보 -->
+            <div class="section">
+                <h2>4️⃣ 디버깅 정보</h2>
+                <div class="button-group">
+                    <button onclick="showPrompt()">프롬프트 확인</button>
+                    <button onclick="showSubmissions()">제출 현황 확인</button>
+                    <button onclick="showGrades()">채점 현황 확인</button>
+                    <button onclick="clearStorage()">Storage 초기화</button>
+                </div>
+                <div id="debugResult" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 스크립트 로드 -->
+    <script src="backend.js"></script>
+    <script src="ai-grading.js"></script>
+
+    <script>
+        // .env의 API 키 (실제 환경에서는 이렇게 하드코딩하면 안됨!)
+        const ENV_API_KEY = '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';
+
+        // 페이지 로드 시 로그인 상태 업데이트
+        window.addEventListener('DOMContentLoaded', () => {
+            updateLoginStatus();
+
+            // 세션에 저장된 API 키 불러오기
+            const savedKey = sessionStorage.getItem('openrouter_api_key');
+            if (savedKey) {
+                document.getElementById('apiKey').value = savedKey;
+            }
+        });
+
+        // 로그인 상태 업데이트
+        function updateLoginStatus() {
+            const user = TBSBackend.auth.getCurrentUser();
+            const statusBadge = document.getElementById('loginStatus');
+            const userName = document.getElementById('userName');
+
+            if (user) {
+                statusBadge.textContent = user.role === 'admin' ? '관리자' : '후보자';
+                statusBadge.className = 'status-badge ' + user.role;
+                userName.textContent = `(${user.name})`;
+            } else {
+                statusBadge.textContent = '로그아웃';
+                statusBadge.className = 'status-badge guest';
+                userName.textContent = '';
+            }
+        }
+
+        // 빠른 로그인
+        function quickLogin(userId) {
+            const passwords = {
+                'admin': 'admin1234',
+                'jahyun': 'pass1',
+                'candidate1': 'test1234',
+                'candidate2': 'test1234'
+            };
+
+            const result = TBSBackend.auth.login(userId, passwords[userId]);
+            if (result.success) {
+                alert(`✅ ${result.user.name}님으로 로그인되었습니다.`);
+                updateLoginStatus();
+            } else {
+                alert(`❌ 로그인 실패: ${result.message}`);
+            }
+        }
+
+        // 로그아웃
+        function logout() {
+            TBSBackend.auth.logout();
+            alert('로그아웃되었습니다.');
+            updateLoginStatus();
+        }
+
+        // 환경 변수 키 사용
+        function useEnvKey() {
+            document.getElementById('apiKey').value = ENV_API_KEY;
+            alert('✅ .env 파일의 API 키가 입력되었습니다.');
+        }
+
+        // API 키 검증
+        async function validateKey() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const resultDiv = document.getElementById('keyValidationResult');
+
+            if (!apiKey) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<h3>❌ 오류</h3><p>API 키를 입력하세요.</p>';
+                return;
+            }
+
+            resultDiv.className = 'result loading';
+            resultDiv.innerHTML = '<h3>⏳ 검증 중...</h3><p>API 키 유효성을 확인하고 있습니다.</p>';
+
+            try {
+                const isValid = await AIGrading.validateAPIKey(apiKey);
+
+                if (isValid) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = '<h3>✅ 유효한 API 키</h3><p>채점 기능을 사용할 수 있습니다.</p>';
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = '<h3>❌ 유효하지 않은 API 키</h3><p>키를 확인하고 다시 시도하세요.</p>';
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<h3>❌ 검증 실패</h3><p>${error.message}</p>`;
+            }
+        }
+
+        // 세션에 API 키 저장
+        function saveKeyToSession() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            if (!apiKey) {
+                alert('API 키를 입력하세요.');
+                return;
+            }
+
+            sessionStorage.setItem('openrouter_api_key', apiKey);
+            alert('✅ API 키가 세션에 저장되었습니다.\n(브라우저를 닫으면 삭제됩니다)');
+        }
+
+        // AI 채점 수행
+        async function performGrading() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const userId = document.getElementById('userId').value;
+            const problemId = parseInt(document.getElementById('problemId').value);
+            const resultDiv = document.getElementById('gradingResult');
+
+            // 권한 확인
+            if (!TBSBackend.auth.isAdmin()) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<h3>❌ 권한 오류</h3><p>관리자 권한이 필요합니다. 먼저 관리자로 로그인하세요.</p>';
+                return;
+            }
+
+            if (!apiKey) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<h3>❌ 입력 오류</h3><p>API 키를 입력하세요.</p>';
+                return;
+            }
+
+            // 로딩 표시
+            resultDiv.className = 'result loading';
+            resultDiv.innerHTML = '<h3>⏳ AI 채점 중...</h3><p>최대 60초가 소요될 수 있습니다.</p>';
+
+            try {
+                const result = await AIGrading.gradeSubmission(apiKey, userId, problemId);
+
+                // 성공 결과 표시
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <h3>✅ 채점 완료</h3>
+                    <div class="score-display">${result.score}점</div>
+                    <p><strong>📝 피드백:</strong></p>
+                    <p style="background: white; padding: 15px; border-radius: 6px; margin: 10px 0;">${result.feedback}</p>
+                    <p><strong>🏷️ 취약점 태그:</strong></p>
+                    <div class="tags">
+                        ${result.weaknessTags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    ${result.detailedScores ? `
+                        <p style="margin-top: 15px;"><strong>📊 세부 점수:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            ${Object.entries(result.detailedScores).map(([key, value]) =>
+                                `<li>${key}: ${value}점</li>`
+                            ).join('')}
+                        </ul>
+                    ` : ''}
+                    <p style="margin-top: 15px; font-size: 12px; color: #666;">
+                        소요 시간: ${result.metadata.elapsedTime}ms |
+                        모델: ${result.metadata.model}
+                    </p>
+                `;
+
+            } catch (error) {
+                handleGradingError(error, resultDiv);
+            }
+        }
+
+        // 직접 채점 수행
+        async function performDirectGrading() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const problemId = parseInt(document.getElementById('directProblemId').value);
+            const answer = document.getElementById('directAnswer').value.trim();
+            const resultDiv = document.getElementById('directGradingResult');
+
+            if (!apiKey || !answer) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<h3>❌ 입력 오류</h3><p>API 키와 답안을 모두 입력하세요.</p>';
+                return;
+            }
+
+            resultDiv.className = 'result loading';
+            resultDiv.innerHTML = '<h3>⏳ AI 채점 중...</h3><p>답안을 분석하고 있습니다...</p>';
+
+            try {
+                const result = await AIGrading.grade(apiKey, problemId, answer);
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <h3>✅ 채점 완료</h3>
+                    <div class="score-display">${result.score}점</div>
+                    <p><strong>📝 피드백:</strong></p>
+                    <p style="background: white; padding: 15px; border-radius: 6px; margin: 10px 0;">${result.feedback}</p>
+                    <p><strong>🏷️ 취약점 태그:</strong></p>
+                    <div class="tags">
+                        ${result.weaknessTags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <p style="margin-top: 15px; font-size: 12px; color: #666;">
+                        ⚠️ 이 결과는 저장되지 않았습니다. TBSBackend.admin.saveGrade()로 수동 저장하세요.
+                    </p>
+                `;
+
+            } catch (error) {
+                handleGradingError(error, resultDiv);
+            }
+        }
+
+        // 에러 처리
+        function handleGradingError(error, resultDiv) {
+            let errorMessage = '알 수 없는 오류가 발생했습니다.';
+            let details = '';
+
+            if (error instanceof AIGrading.errors.AIAPIError) {
+                switch (error.status) {
+                    case 401:
+                        errorMessage = 'API 키가 유효하지 않습니다.';
+                        details = '키를 다시 확인하고 검증 버튼을 눌러주세요.';
+                        break;
+                    case 429:
+                        errorMessage = 'API 호출 한도를 초과했습니다.';
+                        details = '1분 후 다시 시도해주세요.';
+                        break;
+                    case 408:
+                        errorMessage = '요청 시간이 초과되었습니다.';
+                        details = '네트워크 연결을 확인하고 다시 시도해주세요.';
+                        break;
+                    default:
+                        errorMessage = `API 오류 (${error.status})`;
+                        details = error.message;
+                }
+            } else if (error instanceof AIGrading.errors.AIParsingError) {
+                errorMessage = 'AI 응답 파싱에 실패했습니다.';
+                details = error.message;
+                console.error('원본 응답:', error.rawResponse);
+            } else {
+                errorMessage = error.message || errorMessage;
+            }
+
+            resultDiv.className = 'result error';
+            resultDiv.innerHTML = `
+                <h3>❌ 채점 실패</h3>
+                <p><strong>${errorMessage}</strong></p>
+                ${details ? `<p>${details}</p>` : ''}
+                <p style="margin-top: 10px; font-size: 12px;">
+                    자세한 내용은 개발자 콘솔(F12)을 확인하세요.
+                </p>
+            `;
+
+            console.error('[Grading Error]', error);
+        }
+
+        // 프롬프트 확인
+        function showPrompt() {
+            const resultDiv = document.getElementById('debugResult');
+            const prompt1 = AIGrading.getPrompt(1);
+            const prompt2 = AIGrading.getPrompt(2);
+
+            resultDiv.className = 'result success';
+            resultDiv.innerHTML = `
+                <h3>📋 채점 프롬프트</h3>
+                <h4 style="margin-top: 15px;">문제 1:</h4>
+                <pre style="background: white; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px;">${prompt1.systemPrompt}</pre>
+                <h4 style="margin-top: 15px;">문제 2:</h4>
+                <pre style="background: white; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px;">${prompt2.systemPrompt}</pre>
+            `;
+        }
+
+        // 제출 현황 확인
+        function showSubmissions() {
+            const resultDiv = document.getElementById('debugResult');
+
+            if (!TBSBackend.auth.isAdmin()) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<h3>❌ 권한 오류</h3><p>관리자만 확인할 수 있습니다.</p>';
+                return;
+            }
+
+            const submissions = TBSBackend.admin.getAllSubmissions();
+
+            resultDiv.className = 'result success';
+            resultDiv.innerHTML = `
+                <h3>📄 제출 현황 (총 ${submissions.length}건)</h3>
+                <pre style="background: white; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px;">${JSON.stringify(submissions, null, 2)}</pre>
+            `;
+        }
+
+        // 채점 현황 확인
+        function showGrades() {
+            const resultDiv = document.getElementById('debugResult');
+
+            if (!TBSBackend.auth.isAdmin()) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<h3>❌ 권한 오류</h3><p>관리자만 확인할 수 있습니다.</p>';
+                return;
+            }
+
+            const grades = localStorage.getItem('tbs_grades');
+            const gradesObj = grades ? JSON.parse(grades) : {};
+
+            resultDiv.className = 'result success';
+            resultDiv.innerHTML = `
+                <h3>📊 채점 현황</h3>
+                <pre style="background: white; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px;">${JSON.stringify(gradesObj, null, 2)}</pre>
+            `;
+        }
+
+        // Storage 초기화
+        function clearStorage() {
+            if (!confirm('⚠️ 모든 데이터를 초기화하시겠습니까?\n(제출, 채점, 로그인 정보가 삭제됩니다)')) {
+                return;
+            }
+
+            TBSBackend.reset();
+            sessionStorage.clear();
+
+            alert('✅ 초기화 완료');
+            updateLoginStatus();
+
+            const resultDiv = document.getElementById('debugResult');
+            resultDiv.className = 'result success';
+            resultDiv.innerHTML = '<h3>✅ 초기화 완료</h3><p>모든 데이터가 초기 상태로 되돌아갔습니다.</p>';
+        }
+    </script>
+</body>
+</html>

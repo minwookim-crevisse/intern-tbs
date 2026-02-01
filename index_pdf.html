@@ -1,0 +1,4062 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사업지원팀 1차면접과제 웹앱</title>
+    <style>
+        /* ============================================================
+           CSS Styles - 모든 스타일을 인라인으로 포함
+           ============================================================ */
+
+        /* Reset & Global */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #3B82F6;
+            --primary-dark: #1E3A8A;
+            --danger-color: #dc2626;
+            --danger-hover: #b91c1c;
+            --success-color: #16a34a;
+            --warning-color: #F59E0B;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: #4B5563;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .container-sm {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .app-header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--text-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.813rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-card {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Problem List */
+        .problem-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .problem-card {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .problem-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .problem-status {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.813rem;
+            font-weight: 600;
+        }
+
+        .status-submitted {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #854d0e;
+        }
+
+        /* Problem View */
+        .problem-content {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* UX Guide Styles - 섹션 헤더 */
+        .section-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: #FFFFFF;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-content {
+            padding: 20px;
+            background: #F9FAFB;
+            border-radius: 0 0 6px 6px;
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        /* 콘텐츠 박스 */
+        .context-box {
+            background: #EFF6FF;
+            border-left: 4px solid #3B82F6;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .requirement-box {
+            background: #FEF3C7;
+            border-left: 4px solid #F59E0B;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .requirement-item {
+            padding: 12px 16px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .highlight {
+            background: #FEF3C7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .strong {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* View Section (보기) */
+        .view-section {
+            background: white;
+            border: 2px solid #3B82F6;
+            border-radius: 8px;
+            margin: 24px 0;
+            overflow: hidden;
+        }
+
+        .view-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: white;
+            padding: 12px 20px;
+            font-size: 17px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-subtitle {
+            font-size: 14px;
+            font-weight: normal;
+            margin-left: 8px;
+            opacity: 0.9;
+        }
+
+        .view-body {
+            padding: 20px;
+            background: #F9FAFB;
+        }
+
+        /* Editable Table */
+        .editable-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .editable-table thead {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .editable-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #FFFFFF;
+        }
+
+        .editable-table td {
+            padding: 12px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .editable-table tbody tr:nth-child(even) {
+            background: #F9FAFB;
+        }
+
+        .editable-table td.readonly {
+            background: #F5F5F5;
+            color: #6B7280;
+        }
+
+        .editable-table td.editable {
+            background: #FFFACD;
+            padding: 4px;
+        }
+
+        .editable-table input.cell-input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #FFD700;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #FFFACD;
+        }
+
+        .editable-table input.cell-input:focus {
+            outline: none;
+            border-color: #F59E0B;
+            background: white;
+        }
+
+        /* Accordion (참고자료) */
+        .accordion {
+            margin: 20px 0;
+        }
+
+        .accordion-item {
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .accordion-header {
+            background: #F8F9FA;
+            padding: 14px 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background: #E9ECEF;
+        }
+
+        .accordion-header.active {
+            background: #E9ECEF;
+        }
+
+        .accordion-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(90deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .accordion-content.active {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .accordion-body {
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.7;
+            background: white;
+        }
+
+        .accordion-body pre {
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Reference Table Styles (Excel Data) */
+        .ref-table-info {
+            background: #E3F2FD;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #1565C0;
+            font-weight: 500;
+            border-left: 4px solid #2196F3;
+        }
+
+        .ref-table-container {
+            overflow-x: auto;
+            max-height: 450px;
+            overflow-y: auto;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+        }
+
+        .ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            min-width: 600px;
+        }
+
+        .ref-table th,
+        .ref-table td {
+            border: 1px solid #E0E0E0;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .ref-table th {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .ref-table tbody tr:nth-child(even) {
+            background: #F8FAFC;
+        }
+
+        .ref-table tbody tr:hover {
+            background: #EFF6FF;
+        }
+
+        .ref-table td {
+            color: #374151;
+        }
+
+        /* Answer Section */
+        .answer-section {
+            margin-top: 2rem;
+        }
+
+        .answer-label {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .answer-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .answer-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Submitted Screen */
+        .submitted-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+
+        .submitted-icon {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .submitted-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .submitted-message {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+
+        /* Admin Dashboard */
+        .admin-header {
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .candidate-table {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .weakness-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--text-primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(150%);
+            transition: transform 0.3s;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-spinner.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+
+        /* Table Wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-color);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .problem-list {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .section-header {
+                font-size: 16px;
+                padding: 10px 16px;
+            }
+
+            .editable-table {
+                font-size: 12px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .app-header,
+            .btn,
+            .action-buttons {
+                display: none;
+            }
+        }
+
+        /* ============================================================
+           Word Document Styles (요구사항 2)
+           ============================================================ */
+        .word-document {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 30px 40px;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .word-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .word-date {
+            text-align: right;
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+
+        .word-notice {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.8;
+            color: #374151;
+        }
+
+        .word-notice p {
+            margin: 0;
+            padding: 2px 0;
+        }
+
+        .word-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .word-table th,
+        .word-table td {
+            border: 1px solid #374151;
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .word-table th {
+            background: #e5e7eb;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .word-table td {
+            background: white;
+        }
+
+        .word-table .highlight-cell {
+            background: #fef3c7;
+            font-weight: 600;
+        }
+
+        .word-table .section-header-cell {
+            background: #dbeafe;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .word-table .editable-cell {
+            background: #FFFACD;
+            padding: 4px;
+        }
+
+        .word-table .editable-cell input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 2px solid #FFD700;
+            border-radius: 3px;
+            font-size: 13px;
+            font-family: inherit;
+            background: #FFFACD;
+        }
+
+        .word-table .editable-cell input:focus {
+            outline: none;
+            border-color: #F59E0B;
+            background: white;
+        }
+
+        .word-summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .word-summary-table td {
+            padding: 8px 12px;
+            border: 1px solid #374151;
+        }
+
+        .word-summary-table .left-section {
+            width: 45%;
+            vertical-align: top;
+        }
+
+        .word-summary-table .right-section {
+            width: 55%;
+            vertical-align: top;
+        }
+
+        .word-table [data-calc-cell] {
+            background: #e8f5e9 !important;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .word-table .highlight-cell[data-calc-cell] {
+            background: #fff9c4 !important;
+            color: #f57f17;
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           Sheet Tabs Styles (요구사항 3)
+           ============================================================ */
+        .sheet-tabs-container {
+            margin-bottom: 0;
+        }
+
+        .sheet-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            overflow-x: auto;
+        }
+
+        .sheet-tab {
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .sheet-tab:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .sheet-tab.active {
+            background: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+
+        .sheet-content {
+            display: none;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            padding: 0;
+            background: white;
+        }
+
+        .sheet-content.active {
+            display: block;
+        }
+
+        /* ============================================================
+           Final Submit Styles (요구사항 1)
+           ============================================================ */
+        .status-answered {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-final-submitted {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .final-submit-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+        }
+
+        .final-submit-section h3 {
+            color: #166534;
+            margin-bottom: 1rem;
+        }
+
+        .final-submit-section p {
+            color: #15803d;
+            margin-bottom: 1rem;
+            font-size: 14px;
+        }
+
+        .btn-final-submit {
+            background-color: #22c55e;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+        }
+
+        .btn-final-submit:hover {
+            background-color: #16a34a;
+        }
+
+        .btn-final-submit:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* ============================================================
+           Dropdown Table Styles (문제 1번 2번 보기)
+           ============================================================ */
+        .dropdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .dropdown-table thead {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .dropdown-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #FFFFFF;
+        }
+
+        .dropdown-table td {
+            padding: 12px;
+            border: 1px solid #E5E7EB;
+            vertical-align: middle;
+        }
+
+        .dropdown-table tbody tr:nth-child(even) {
+            background: #F9FAFB;
+        }
+
+        .dropdown-table .row-label {
+            background: #F3F4F6;
+            font-weight: 600;
+            color: #374151;
+            width: 80px;
+            text-align: center;
+        }
+
+        .dropdown-table select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .dropdown-table select:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .dropdown-table select:hover {
+            border-color: #9CA3AF;
+        }
+
+        /* ============================================================
+           Settlement Form Styles (문제 2번 1번 보기)
+           ============================================================ */
+        .settlement-form {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+        }
+
+        .settlement-form .form-title {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #111827;
+            padding: 10px;
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+
+        .settlement-form .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e40af;
+            margin: 20px 0 10px 0;
+            padding: 8px 12px;
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .settlement-form table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .settlement-form th {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: 600;
+            border: 1px solid #2563eb;
+        }
+
+        .settlement-form td {
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .settlement-form .row-label {
+            text-align: left;
+            font-weight: 500;
+            background: #f9fafb;
+        }
+
+        .settlement-form .subtotal-row {
+            background: #fef3c7;
+            font-weight: 600;
+        }
+
+        .settlement-form .total-row {
+            background: #dcfce7;
+            font-weight: 700;
+        }
+
+        .settlement-form .vat-row {
+            background: #dbeafe;
+            font-weight: 700;
+        }
+
+        .settlement-form input[type="text"] {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 13px;
+            text-align: right;
+        }
+
+        .settlement-form input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .settlement-form select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .settlement-form select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .settlement-form .auto-calc {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .settlement-form .fee-rate {
+            background: #f5f5f5;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        // ============================================================
+        // Backend Logic
+        // ============================================================
+
+        const STORAGE_KEYS = {
+            USERS: 'tbs_users',
+            PROBLEMS: 'tbs_problems',
+            SUBMISSIONS: 'tbs_submissions',
+            GRADES: 'tbs_grades',
+            CURRENT_USER: 'tbs_current_user'
+        };
+
+        // P0 Fix 1: 비밀번호 해시 저장 (실제 비밀번호는 코드에 노출되지 않음)
+        // 원본 비밀번호: pass1~pass9 -> 해시값으로 변환
+        const INITIAL_USERS = [
+            // 일반 사용자 (응시자)
+            { id: 'jahyun', passwordHash: hashPasswordSync('pass1'), role: 'candidate', name: '홍자현' },
+            { id: 'eunyoung', passwordHash: hashPasswordSync('pass2'), role: 'candidate', name: '김은영' },
+            { id: 'jiyeon', passwordHash: hashPasswordSync('pass3'), role: 'candidate', name: '박지연' },
+            { id: 'test1', passwordHash: hashPasswordSync('pass8'), role: 'candidate', name: '테스트' },
+            { id: 'test2', passwordHash: hashPasswordSync('pass9'), role: 'candidate', name: '테스트' },
+            // 관리자
+            { id: 'minchang', passwordHash: hashPasswordSync('pass4'), role: 'admin', name: '김민창' },
+            { id: 'minwoo', passwordHash: hashPasswordSync('pass5'), role: 'admin', name: '김민우' },
+            { id: 'minwoo1', passwordHash: hashPasswordSync('pass6'), role: 'admin', name: '김민우' },
+            { id: 'minwoo2', passwordHash: hashPasswordSync('pass7'), role: 'admin', name: '김민우' }
+        ];
+
+        const PROBLEMS_CANDIDATE = [
+            {
+                id: 1,
+                title: 'SaaS 서비스 사용료 정산 오류 검수',
+                content: `당신은 사업지원 인턴으로, SaaS 서비스 도너스의 월별 사용료를 계산(정산)하는 업무를 맡고 있다.
+
+도너스 사용료는 아래 두 가지로 구성된다.
+
+• 기본서비스 사용료: 고객이 구독 중인 상품과 구독기간(1개월/12개월)에 따라 정해지는 금액
+
+• 부가서비스 사용료: 해당 월의 실제 사용량(사용 내역)에 따라 매월 달라지는 금액
+
+
+당신은 3월 사용료 정산서를 작성해 고객에게 안내했으나, 고객으로부터 "사용료 계산이 잘못된 것 같다"는 문의를 받았다.
+
+요구사항
+
+1. 제공된 정산서(3월분)를 기준으로, 계산이 잘못된 부분이 있다면 정확한 금액으로 수정해 주세요.
+
+2. 같은 문제가 다시 발생하지 않도록, 각 오류가 나온 항목별로 검수 방법을 선택해 주세요.`,
+                views: [
+                    {
+                        id: 'view-1',
+                        title: '1번 보기',
+                        subtitle: '3월 통합정산서',
+                        type: 'word-document',
+                        wordData: {
+                            title: '도너스 통합정산서',
+                            date: '정산일자: 2026-04-05',
+                            notices: [
+                                '* 기재된 모든 금액에는 부가세가 포함되어 있습니다.',
+                                '* 매월 10일에 합산이용금액에서 할인금액, 적립금, 충전금, 분리과금액을 차감한 최종청구금액이 결제됩니다.',
+                                '* 적립금과 충전금은 \'메시지, 인증\' 사용료 납부에 사용됩니다. 적립금은 도너스 추천 프로그램을 통해 지급되며 잔액은 이월되지 않습니다.',
+                                '* 청구 및 메시지 사용량은 관리시스템의 [사용량] 화면에서 확인하실 수 있습니다.',
+                                '* 통합정산서 관련 문의는 온라인 상담채널 또는 donus.cs@crevisse.com 이메일로 보내주세요.'
+                            ],
+                            customerInfo: {
+                                headers: ['고객코드', '고객명', '기본서비스 구독기간', '부가서비스 집계기간'],
+                                rows: [['abc', '사단법인 abc 재단', '2026-03-01 ~ 2026-03-31', '2026-03-01 ~ 2026-03-31']]
+                            },
+                            detailItems: [
+                                { category: 'A. 기본서비스', type: '펀드레이징', description: '펀드레이징 에디션의 구독기간 집계', originalAmount: '33,000 원', address: 'D1' },
+                                { category: 'A. 기본서비스', type: '커뮤니케이션', description: '커뮤니케이션 에디션의 구독기간 집계', originalAmount: '82,500 원', address: 'D2' },
+                                { category: 'A. 기본서비스', type: '확장 서비스', description: '확장 구매한 서비스의 구독기간 집계', originalAmount: '495,000 원', address: 'D3' },
+                                { category: 'A. 기본서비스', type: '확장 사용량', description: '확장 구매한 사용자 계정 수 집계', originalAmount: '48,190 원', address: 'D4' },
+                                { category: 'B. 부가서비스', type: '청구', description: '제공한도를 초과한 약정의 청구성공량 집계', originalAmount: '250,000 원', address: 'D5' },
+                                { category: 'B. 부가서비스', type: '메시지, 인증', description: '문자, 카카오톡, 출금동의, 계좌조회 등의 이용량 집계', originalAmount: '3,000,000 원', address: 'D6' }
+                            ],
+                            summary: {
+                                leftSection: {
+                                    title: '<메시지충전금 현황>',
+                                    items: [
+                                        { label: '충전금 기초잔액', originalValue: '10,000,000 원', address: 'L1', editable: true },
+                                        { label: '당기 충전액', fixedValue: '0 원', address: 'L2' },
+                                        { label: '당기 충전금 사용액', address: 'L3', autoCalc: '-MIN(L1,D6)' },
+                                        { label: '충전금 기말잔액', address: 'L4', autoCalc: 'L1+L2+L3' }
+                                    ]
+                                },
+                                rightSection: {
+                                    title: '<합산 내역>',
+                                    items: [
+                                        { label: 'A. 기본서비스', address: 'R1', autoCalc: 'D1+D2+D3+D4' },
+                                        { label: 'B. 부가서비스', address: 'R2', autoCalc: 'D5+D6' },
+                                        { label: '합산이용금액', address: 'R4', autoCalc: 'R1+R2' },
+                                        { label: '- 메시지 충전금 사용액', address: 'R5', autoCalc: 'L3' },
+                                        { label: '최종청구금액', address: 'R6', autoCalc: 'R4+R5', highlight: true }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    {
+                        id: 'view-2',
+                        title: '2번 보기',
+                        subtitle: '검수방법 선택표',
+                        type: 'dropdown-table',
+                        tableData: {
+                            headers: ['', '관련 항목', '검토 방법'],
+                            dropdownOptions: {
+                                relatedItems: [
+                                    '펀드레이징 에디션 사용료',
+                                    '커뮤니케이션 에디션 사용료',
+                                    '확장서비스 사용료',
+                                    '확장사용량 사용료',
+                                    '부가서비스(청구) 사용료',
+                                    '부가서비스(메시지) 사용료',
+                                    '메시지 충전금 잔액'
+                                ],
+                                reviewMethods: [
+                                    '상품주문 요청서와 변동이력을 비교한다.',
+                                    '상품주문 요청서와 구독대장을 비교한다.',
+                                    '변동이력과 구독대장을 비교한다.',
+                                    '지난달 정산대장 메시지 충전금 기말과 이번달 정산대장 메시지 충전금 기초를 비교한다.'
+                                ]
+                            },
+                            rows: [
+                                { label: '오류 1', itemAddress: 'A1', methodAddress: 'B1' },
+                                { label: '오류 2', itemAddress: 'A2', methodAddress: 'B2' },
+                                { label: '오류 3', itemAddress: 'A3', methodAddress: 'B3' }
+                            ]
+                        }
+                    }
+                ],
+                references: [
+                    {
+                        id: 1,
+                        title: '참고자료 #1: 사용료 정산매뉴얼',
+                        type: 'txt',
+                        content: `도너스 사용료 정산 매뉴얼(후보자 제공용)
+
+도너스 사용료는 매월 아래 절차에 따라 산출·정산한다.
+
+전체 흐름
+
+고객 요청 상품 확인 → 구독 상품 현황 최신화 → 기본 사용료 산출 → 부가서비스 사용료 산출 → 메시지 충전금 반영
+
+1) 고객 요청 상품 확인
+고객성공팀을 통해 접수된 상품 주문/변경 요청을 확인한다.
+요청받은 상품 주문은 [요청이력]에 기록한다.
+
+2) 구독 상품 현황 최신화
+[요청이력]에 작성된 내용을 근거로 고객별 구독 상품 현황을 최신화한다.
+
+3) 기본 사용료 산출
+고객의 구독기간(1개월 / 12개월)에 맞춰 구독 중인 상품 단가를 반영하여 사용료를 산출한다.
+
+예) A-1 상품 단가가 1개월 10,000원 / 12개월 110,000원일 경우
+고객이 1개월 구독이면 갱신 시 10,000원을 청구한다.
+
+구독기간 중 상품 주문이 발생한 경우, 해당 상품 사용료는 일단가 기준으로 산출한다.
+
+4) 부가서비스 사용료 산출
+매월 집계된 부가서비스 사용량을 기준으로 부가서비스 사용료를 산출한다.
+부가서비스 사용료는 부가서비스 사용량 시트의 집계 영역에서 확인한다.
+
+5) 메시지 충전금 반영
+부가서비스 사용료 중 메시지 사용료는 고객 요청에 따라 사전 충전이 가능하다.
+매월 메시지 사용료를 집계할 때 충전금이 반영된다.
+충전금이 모두 소진될 경우, 메시지 사용료 차액은 당월에 청구된다.
+
+정산 관련 규칙(메시지 충전금)
+메시지 충전금은 매월 남은 금액이 다음 달로 그대로 넘어간다.
+그래서 지난달 마지막에 남아 있던 충전금(전월 기말) = 이번 달 시작할 때의 충전금(당월 기초)이다.
+
+참고 데이터
+[요청이력]: 고객 주문/변경 요청 기록
+[구독 상품 현황]: 고객별 현재 구독 상태
+[상품대장]: 상품 단가 정보
+부가서비스 사용량 시트: 부가서비스 사용량 및 월별 집계`
+                    },
+                    {
+                        id: 2,
+                        title: '참고자료 #2-1: 펀드레이징 상품주문 요청서',
+                        type: 'txt',
+                        content: `[참고자료] 상품 변경 요청서(펀드레이징 에디션)
+
+상품요청코드: Request-260201
+발신: 고객성공팀
+수신: 사업지원팀
+
+사업지원팀 담당자님,
+안녕하세요.
+
+고객 사단법인 ABC 재단(고객코드: ABC)의 기본서비스 상품 변경 요청이 접수되어 전달드립니다.
+해당 변경은 구독 시작일(2026-03-01)부터 적용 부탁드립니다.
+
+1) 고객 정보
+고객코드: ABC
+고객명: 사단법인 ABC 재단
+구독기간: 2026-03-01 ~ 2026-03-31
+
+2) 상품 변경 요청
+주문 변경일: 2026-03-01
+구분(상품군): 펀드레이징 에디션
+해지 상품: FR-0001
+변경(적용) 상품: FR-0002
+
+3) 참고사항(정산 반영 기준)
+FR-0001은 2026년 3월 사용료부터 제외합니다.
+FR-0002는 2026년 3월 사용료부터 전액 포함합니다.`
+                    },
+                    {
+                        id: 3,
+                        title: '참고자료 #2-2: 확장서비스 상품주문 요청서',
+                        type: 'txt',
+                        content: `[참고자료] 상품 변경 요청서(확장사용량)
+
+상품요청코드: Request-260314
+발신: 고객성공팀
+수신: 사업지원팀
+
+사업지원팀 담당자님,
+안녕하세요.
+
+고객 사단법인 ABC 재단(고객코드: ABC)의 기본서비스(확장서비스) 추가 주문이 접수되어 전달드립니다.
+해당 변경은 구독 기간 중인 03월 14일부터 반영부탁드립니다.
+
+1) 고객 정보
+- 고객코드: ABC
+- 고객명: 사단법인 ABC 재단
+- 구독기간: 2026-03-01 ~ 2026-03-31
+- 과금기간: 2026-03-14 ~ 2026-03-31 (17일)
+
+2) 상품 수량 변경
+- 주문 변경일: 2026-02-01
+- 구분(상품군): 확장사용량
+- 상품코드: DQT-00001
+- 상품명: 사용자계정 1개
+- 기존수량: 1개
+- 변경수량: 2개 (1개 추가)
+
+3) 참고사항(정산 반영 기준)
+- 구독기간 중에 상품 추가된 경우, 추가분에 대해 변경일부터 구독 종료일까지 기간을 일할 단가로 산출합니다.
+
+[사업지원팀 회신내용]
+고객성공팀 담당자님, 요청사항 확인했습니다.
+구독기간 중 QT-00001 1개 추가 사용함에 따라 18,445원(VAT 포함) 청구합니다.
+
+- 사용료 산출내역
+QT-00001 일단가 1,085 * 17일 = 18,445원`
+                    },
+                    {
+                        id: 4,
+                        title: '참고자료 #3-1: 2월 사용료 정산이력',
+                        type: 'tabbed-table',
+                        sheets: {
+                            '정산대장(2월 사용료)': {
+                                info: '정산일자: 2026-03-05 | 부가서비스 이용기간: 2026-02-01 ~ 2026-02-28',
+                                headers: ['고객코드', '고객명', '구독시작일', '구독종료일', '펀드레이징 에디션', '커뮤니케이션 에디션', '확장서비스', '확장사용량', '부가서비스(청구)', '부가서비스(메시지, 인증)', '메시지 충전금(기초)', '당기 충전액', '메시지청구금액', '메시지 충전금(기말)', '최종청구금액'],
+                                rows: [
+                                    ['abc', '사단법인 abc 재단', '2026-02-01', '2026-02-28', '33,000', '82,500', '495,000', '33,000', '210,000', '7,500,000', '10,000,000', '-', '0', '2,500,000', '853,500']
+                                ]
+                            },
+                            '구독이력(2월 사용료)': {
+                                info: '고객코드: abc | 고객명: 사단법인 abc 재단',
+                                headers: ['상품코드', '상품명', '구독시작일', '구독종료일', '단가', '수량'],
+                                rows: [
+                                    ['FR-00001', '펀드레이징 basic', '2026-02-01', '2026-02-28', '33,000', '1'],
+                                    ['CM-00002', '커뮤니케이션 standard', '2026-02-01', '2026-02-28', '82,500', '1'],
+                                    ['EX-00001', 'A 기능 추가', '2026-02-01', '2026-02-28', '55,000', '1'],
+                                    ['EX-00009', 'F 기능 추가', '2026-02-01', '2026-02-28', '440,000', '1'],
+                                    ['QT-00001', '사용자 계정 1개', '2026-02-01', '2026-02-28', '33,000', '1']
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        id: 5,
+                        title: '참고자료 #3-2: 3월 사용료 정산이력',
+                        type: 'tabbed-table',
+                        sheets: {
+                            '정산대장': {
+                                info: '정산일자: 2026-04-05 | 부가서비스 이용기간: 2026-03-01 ~ 2026-03-31',
+                                headers: ['고객코드', '고객명', '구독시작일', '구독종료일', '펀드레이징 에디션', '커뮤니케이션 에디션', '확장서비스', '확장사용량', '부가서비스(청구)', '부가서비스(메시지, 인증)', '메시지 충전금(기초)', '당기 충전액', '메시지청구금액', '메시지 충전금(기말)', '최종청구금액'],
+                                rows: [
+                                    ['abc', '사단법인 abc 재단', '2026-03-01', '2026-03-31', '33,000', '82,500', '495,000', '48,190', '250,000', '3,000,000', '10,000,000', '-', '0', '7,000,000', '908,690']
+                                ]
+                            },
+                            '변경대장': {
+                                info: '고객코드: ABC | 고객명: 사단법인 ABC 재단',
+                                headers: ['고객코드', '고객명', '변경유형', '기존', '변경', '비고'],
+                                rows: [
+                                    ['ABC', '사단법인 ABC 재단', '펀드레이징 에디션', 'FR-0001', 'FR-0002', '03월 사용료부터 FR-0002 사용료 부과'],
+                                    ['ABC', '사단법인 ABC 재단', '확장사용량', 'QT-00001 1개', 'QT-00001 2개', '14일동안 추가사용함에 따라 15,190원 부과']
+                                ]
+                            },
+                            '구독목록': {
+                                info: '고객코드: abc | 고객명: 사단법인 abc 재단',
+                                headers: ['상품코드', '상품명', '구독시작일', '구독종료일', '단가', '수량'],
+                                rows: [
+                                    ['FR-00001', '펀드레이징 basic', '2026-03-01', '2026-03-31', '33,000', '1'],
+                                    ['CM-00002', '커뮤니케이션 standard', '2026-03-01', '2026-03-31', '82,500', '1'],
+                                    ['EX-00001', 'A 기능 추가', '2026-03-01', '2026-03-31', '55,000', '1'],
+                                    ['EX-00009', 'F 기능 추가', '2026-03-01', '2026-03-31', '440,000', '1'],
+                                    ['QT-00001', '사용자 계정 1개', '2026-03-01', '2026-03-31', '33,000', '1'],
+                                    ['QT-00001', '사용자 계정 1개', '2026-03-17', '2026-03-31', '15,190', '1']
+                                ]
+                            },
+                            '부가서비스 사용량': {
+                                info: '정산일자: 2026-04-05 | 고객코드: abc',
+                                headers: ['정산일자', '고객코드', '청구성공수', '이메일발송수', '알림톡발송수', '친구톡(텍스트)발송수', '친구톡(이미지)발송수', 'SMS발송수', 'LMS발송수', 'MMS발송수', 'ARS수신수', '청구기본제공량', '초과 청구수수료', '부가서비스(청구) 사용료', '부가서비스(메시지) 사용료'],
+                                rows: [
+                                    ['2026-04-05', 'abc', '3,700', '177', '0', '0', '0', '676', '989', '28', '89', '3,000', '30', '250,000', '3,000,000']
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        id: 6,
+                        title: '참고자료 #4: 상품목록',
+                        type: 'table',
+                        tableData: {
+                            headers: ['상품코드', '상품명', '구분', '월 단가', '일단가'],
+                            rows: [
+                                ['FR-00001', '펀드레이징 basic', '펀드레이징 에디션', '33,000', '1,085'],
+                                ['FR-00002', '펀드레이징 standard', '펀드레이징 에디션', '55,000', '1,808'],
+                                ['FR-00003', '펀드레이징 delux', '펀드레이징 에디션', '66,000', '2,170'],
+                                ['FR-00004', '펀드레이징 premium', '펀드레이징 에디션', '99,000', '3,255'],
+                                ['CM-00001', '커뮤니케이션 basic', '커뮤니케이션 에디션', '0', '0'],
+                                ['CM-00002', '커뮤니케이션 standard', '커뮤니케이션 에디션', '82,500', '2,713'],
+                                ['CM-00003', '커뮤니케이션 delux', '커뮤니케이션 에디션', '165,000', '5,425'],
+                                ['CM-00005', '커뮤니케이션 premium', '커뮤니케이션 에디션', '330,000', '10,849'],
+                                ['EX-00001', 'A 기능 추가', '확장 서비스', '55,000', '1,808'],
+                                ['EX-00002', 'B 기능 추가', '확장 서비스', '110,000', '3,617'],
+                                ['EX-00003', 'C 기능 추가', '확장 서비스', '110,000', '3,617'],
+                                ['EX-00005', 'D 기능 추가', '확장 서비스', '220,000', '7,233'],
+                                ['EX-00006', 'E 기능 추가', '확장 서비스', '550,000', '18,082'],
+                                ['EX-00009', 'F 기능 추가', '확장 서비스', '440,000', '14,466'],
+                                ['EX-00011', 'G 기능 추가', '확장 서비스', '1,100,000', '36,165'],
+                                ['EX-00012', 'H 기능 추가', '확장 서비스', '1,100,000', '36,165'],
+                                ['QT-00001', '사용자 계정 1개', '확장 사용량', '33,000', '1,085'],
+                                ['QT-00002', '부서 10개', '확장 사용량', '55,000', '1,808'],
+                                ['QT-00003', '시스템 그룹 10개', '확장 사용량', '77,000', '2,531'],
+                                ['QT-00004', '모금함 10개', '확장 사용량', '165,000', '5,425']
+                            ]
+                        }
+                    }
+                ],
+                answerTypes: [
+                    { subId: '1-1', type: 'view', viewId: 'view-1', label: '1번 보기 수정' },
+                    { subId: '1-2', type: 'view', viewId: 'view-2', label: '2번 보기 수정' }
+                ]
+            },
+            {
+                id: 2,
+                title: '미디어 사업 사용료 정산서 작성',
+                content: `당신은 사업지원 인턴으로, 미디어 사업의 월별 사용료(3월분)를 계산(정산)하는 업무를 맡고 있다.
+
+미디어 사업 사용료는 아래 두 가지 매출로 구성된다.
+
+• 광고집행 매출: 광고채널에서 확인된 광고집행비용을 기준으로, 계약된 수수료(%)를 반영해 산출한 금액
+
+• 광고소재 매출: 광고집행담당자가 확인해 준 광고소재 판매/제작 매출 금액
+
+
+당신은 광고집행담당자의 협조를 받아 3월 사용료 정산서를 작성하고자 한다.
+
+요구사항
+
+1. 광고채널에서 3월 광고집행비용 데이터를 추출하고, 수수료를 반영한 광고집행 매출과 광고소재 매출을 각각 집계하여 정산 항목(정산서)을 작성해 주세요.
+
+2. 완성된 정산서 금액을 기준으로, 고객에게 발행할 세금계산서 발행 금액을 입력해 주세요.`,
+                views: [
+                    {
+                        id: 'view-1',
+                        title: '1번 보기',
+                        subtitle: 'BCD 03월 정산서',
+                        type: 'settlement-form',
+                        formData: {
+                            title: 'BCD 03월 정산서',
+                            summary: {
+                                headers: ['항목', '공급가'],
+                                rows: [
+                                    { label: '가. 광고소재 제작', address: 'SUM_A', autoCalc: true },
+                                    { label: '나. 온라인 광고 집행', address: 'SUM_B', autoCalc: true },
+                                    { label: 'Total', address: 'TOTAL', autoCalc: true },
+                                    { label: 'Total (VAT 포함)', address: 'TOTAL_VAT', autoCalc: true }
+                                ]
+                            },
+                            sectionA: {
+                                title: '가. 광고소재 제작',
+                                headers: ['구분', '산정 기준', '공급가'],
+                                rows: [
+                                    { label: '광고소재 A', basis: '-', address: 'A1' },
+                                    { label: '광고소재 B', basis: '-', address: 'A2' }
+                                ],
+                                subtotal: { label: 'Sub Total (VAT 제외)', address: 'SUB_A' }
+                            },
+                            sectionB: {
+                                title: '나. 온라인 광고 집행',
+                                headers: ['매체 구분', '수수료율', '(1) 실집행 광고비', '(2) 수수료', '공급가: (1)+(2)'],
+                                mediaOptions: ['G사', 'M사', 'K사', 'X사', 'N사'],
+                                feeRateOptions: [0.10, 0.15],
+                                rows: [
+                                    { mediaAddress: 'B1_M', rateAddress: 'B1_R', costAddress: 'B1_C', feeAddress: 'B1_F', totalAddress: 'B1_T' },
+                                    { mediaAddress: 'B2_M', rateAddress: 'B2_R', costAddress: 'B2_C', feeAddress: 'B2_F', totalAddress: 'B2_T' },
+                                    { mediaAddress: 'B3_M', rateAddress: 'B3_R', costAddress: 'B3_C', feeAddress: 'B3_F', totalAddress: 'B3_T' },
+                                    { mediaAddress: 'B4_M', rateAddress: 'B4_R', costAddress: 'B4_C', feeAddress: 'B4_F', totalAddress: 'B4_T' },
+                                    { mediaAddress: 'B5_M', rateAddress: 'B5_R', costAddress: 'B5_C', feeAddress: 'B5_F', totalAddress: 'B5_T' }
+                                ],
+                                subtotal: { label: 'Sub Total (VAT 제외)', costAddress: 'SUB_B_C', feeAddress: 'SUB_B_F', totalAddress: 'SUB_B' }
+                            }
+                        }
+                    },
+                    {
+                        id: 'view-2',
+                        title: '2번 보기',
+                        subtitle: 'BCD 03월 세금계산서',
+                        type: 'editable-table',
+                        tableData: {
+                            headers: ['항목', '금액'],
+                            rows: [
+                                [
+                                    { value: '세금계산서 발행금액 (VAT 포함)', readonly: true },
+                                    { value: '', editable: true, address: 'TAX_TOTAL' }
+                                ]
+                            ]
+                        }
+                    }
+                ],
+                references: [
+                    {
+                        id: 1,
+                        title: '참고자료 #1: 광고집행 매출 산출매뉴얼',
+                        type: 'txt',
+                        content: `[참고자료] 광고집행 매출 산출매뉴얼
+
+광고집행 매출은 광고채널에서 확인된 광고집행비용(원가)을 기준으로 산출합니다.
+
+1. 광고집행비용 데이터 추출
+- 광고채널에서 해당 월의 광고집행비용 데이터를 추출합니다.
+- 매체별로 집행비용을 집계합니다.
+
+2. 수수료 반영
+- 계약된 수수료율(%)을 광고집행비용에 적용하여 매출을 산출합니다.
+- 수수료율은 매체정의표에서 확인합니다.
+
+3. 광고소재 매출
+- 광고집행담당자가 확인해 준 광고소재 판매/제작 매출을 별도 집계합니다.
+
+4. 세금계산서 발행
+- 광고집행 매출과 광고소재 매출을 합산한 금액으로 세금계산서를 발행합니다.
+- 선수금이 있는 경우, 선수금을 차감한 금액으로 발행합니다.`
+                    },
+                    {
+                        id: 2,
+                        title: '참고자료 #3: 광고집행담당자 소통이력',
+                        type: 'txt',
+                        content: `[참고자료] 광고집행담당자 → 사업지원팀 소통 이력
+
+(이력 1) 선수금 잔액 안내
+발신일: 03월 01일
+발신자: 광고집행담당자
+수신자: 사업지원팀
+
+사업지원팀 담당자님, 안녕하세요. 광고집행담당자입니다.
+지난 2월 사용료 청구 이후, BCD(고객명: 사단법인 BCD 재단)의 선수금 잔액은 8,656,853원입니다.
+3월 사용료 청구 시, 해당 잔액을 제외한 금액에 대해 세금계산서 발행 부탁드립니다.
+
+감사합니다.
+광고집행담당자 드림
+
+(이력 2) 추가 입금(선지급) 안내
+발신일: 03월 15일
+발신자: 광고집행담당자
+수신자: 사업지원팀
+
+사업지원팀 담당자님, 안녕하세요. 광고집행담당자입니다.
+금일 기준으로 BCD(고객명: 사단법인 BCD 재단)에서 10,000,000원을 추가 입금하였습니다.
+3월 사용료 청구 시, 기존 선수금 잔액과 금번 입금액을 반영하여 세금계산서 발행 부탁드립니다.
+
+감사합니다.
+광고집행담당자 드림
+
+(이력 3) 3월 광고소재 매출 및 집행 매체 공유
+발신일: 03월 31일
+발신자: 광고집행담당자
+수신자: 사업지원팀
+
+사업지원팀 담당자님, 안녕하세요. 광고집행담당자입니다.
+3월 기준 광고소재 제작 매출은 아래와 같습니다. (아래 금액은 VAT 제외 금액입니다.)
+
+[3월 광고소재 제작 매출]
+광고소재 A: 1,890,000원
+광고소재 B: 3,500,000원
+
+또한 3월 동안 집행한 광고 매체는 아래와 같습니다.
+[3월 광고집행 매체]
+G사
+M사
+K사
+X사
+N사
+
+감사합니다.
+광고집행담당자 드림`
+                    },
+                    {
+                        id: 3,
+                        title: '참고자료 #2: 광고집행비용(원가)',
+                        type: 'table',
+                        tableData: {
+                            info: '시트명: 매출원가대장26-03 | 집계기간: 2026년 3월',
+                            headers: ['채널', '집행일자', '지출금액'],
+                            rows: [
+                                ['G사', '2026-03-01', '172,802'],
+                                ['G사', '2026-03-02', '172,676'],
+                                ['G사', '2026-03-03', '156,018'],
+                                ['G사', '2026-03-04', '51,072'],
+                                ['G사', '2026-03-05', '172,592'],
+                                ['G사', '2026-03-06', '152,312'],
+                                ['G사', '2026-03-07', '30,632'],
+                                ['G사', '2026-03-08', '172,664'],
+                                ['G사', '2026-03-09', '123,881'],
+                                ['G사', '2026-03-10', '14,992'],
+                                ['G사', '2026-03-11', '172,798'],
+                                ['G사', '2026-03-12', '245,435'],
+                                ['G사', '2026-03-13', '26,069'],
+                                ['G사', '2026-03-14', '172,603'],
+                                ['G사', '2026-03-15', '172,702'],
+                                ['G사', '2026-03-16', '172,774'],
+                                ['G사', '2026-03-17', '357,173'],
+                                ['G사', '2026-03-18', '172,639'],
+                                ['G사', '2026-03-19', '48,798'],
+                                ['G사', '2026-03-20', '172,785'],
+                                ['G사', '2026-03-21', '34,222'],
+                                ['G사', '2026-03-22', '172,593'],
+                                ['G사', '2026-03-23', '33,972'],
+                                ['G사', '2026-03-24', '172,817'],
+                                ['G사', '2026-03-25', '7,405'],
+                                ['G사', '2026-03-26', '172,756'],
+                                ['G사', '2026-03-27', '172,800'],
+                                ['G사', '2026-03-28', '172,658'],
+                                ['G사', '2026-03-29', '703,499'],
+                                ['G사', '2026-03-30', '172,694'],
+                                ['G사', '2026-03-31', '105,770'],
+                                ['M사', '2026-03-01', '568,864'],
+                                ['M사', '2026-03-02', '317,058'],
+                                ['M사', '2026-03-03', '27,240'],
+                                ['M사', '2026-03-04', '1,149,638'],
+                                ['M사', '2026-03-05', '689,878'],
+                                ['M사', '2026-03-06', '172,027'],
+                                ['M사', '2026-03-07', '603,101'],
+                                ['M사', '2026-03-08', '320,384'],
+                                ['M사', '2026-03-09', '24,302'],
+                                ['M사', '2026-03-10', '1,107,263'],
+                                ['M사', '2026-03-11', '982,052'],
+                                ['M사', '2026-03-12', '256,785'],
+                                ['M사', '2026-03-13', '558,760'],
+                                ['M사', '2026-03-14', '301,555'],
+                                ['M사', '2026-03-15', '13,928'],
+                                ['M사', '2026-03-16', '1,222,256'],
+                                ['M사', '2026-03-17', '901,957'],
+                                ['M사', '2026-03-18', '226,992'],
+                                ['M사', '2026-03-19', '587,021'],
+                                ['M사', '2026-03-20', '320,013'],
+                                ['M사', '2026-03-21', '34,195'],
+                                ['M사', '2026-03-22', '1,357,867'],
+                                ['M사', '2026-03-23', '960,709'],
+                                ['M사', '2026-03-24', '254,924'],
+                                ['M사', '2026-03-25', '638,760'],
+                                ['M사', '2026-03-26', '334,367'],
+                                ['M사', '2026-03-27', '38,185'],
+                                ['M사', '2026-03-28', '1,262,085'],
+                                ['M사', '2026-03-29', '982,755'],
+                                ['M사', '2026-03-30', '246,991'],
+                                ['M사', '2026-03-31', '567,343'],
+                                ['K사', '2026-03-01', '180,742'],
+                                ['K사', '2026-03-02', '180,259'],
+                                ['K사', '2026-03-03', '179,997'],
+                                ['K사', '2026-03-04', '179,967'],
+                                ['K사', '2026-03-05', '179,924'],
+                                ['K사', '2026-03-06', '179,921'],
+                                ['K사', '2026-03-07', '179,885'],
+                                ['K사', '2026-03-08', '179,548'],
+                                ['K사', '2026-03-09', '179,451'],
+                                ['K사', '2026-03-10', '179,343'],
+                                ['K사', '2026-03-11', '179,252'],
+                                ['K사', '2026-03-12', '179,152'],
+                                ['K사', '2026-03-13', '179,125'],
+                                ['K사', '2026-03-14', '178,962'],
+                                ['K사', '2026-03-15', '178,778'],
+                                ['K사', '2026-03-16', '178,731'],
+                                ['K사', '2026-03-17', '178,610'],
+                                ['K사', '2026-03-18', '178,458'],
+                                ['K사', '2026-03-19', '178,240'],
+                                ['K사', '2026-03-20', '176,783'],
+                                ['K사', '2026-03-21', '127,916'],
+                                ['K사', '2026-03-22', '127,453'],
+                                ['K사', '2026-03-23', '127,255'],
+                                ['K사', '2026-03-24', '127,238'],
+                                ['K사', '2026-03-25', '126,733'],
+                                ['K사', '2026-03-26', '126,592'],
+                                ['K사', '2026-03-27', '126,524'],
+                                ['K사', '2026-03-28', '126,514'],
+                                ['K사', '2026-03-29', '126,446'],
+                                ['K사', '2026-03-30', '126,306'],
+                                ['K사', '2026-03-31', '126,239'],
+                                ['X사', '2026-03-01', '33,390'],
+                                ['X사', '2026-03-02', '220,020'],
+                                ['X사', '2026-03-03', '207,128'],
+                                ['X사', '2026-03-04', '212,471'],
+                                ['X사', '2026-03-05', '206,139'],
+                                ['X사', '2026-03-06', '210,773'],
+                                ['X사', '2026-03-07', '212,658'],
+                                ['X사', '2026-03-08', '212,068'],
+                                ['X사', '2026-03-09', '206,130'],
+                                ['X사', '2026-03-10', '208,457'],
+                                ['X사', '2026-03-11', '207,815'],
+                                ['X사', '2026-03-12', '208,995'],
+                                ['X사', '2026-03-13', '206,800'],
+                                ['X사', '2026-03-14', '212,658'],
+                                ['X사', '2026-03-15', '202,308'],
+                                ['X사', '2026-03-16', '180,617'],
+                                ['N사', '2026-03-01', '70,253'],
+                                ['N사', '2026-03-02', '71,432'],
+                                ['N사', '2026-03-03', '71,645'],
+                                ['N사', '2026-03-04', '75,227'],
+                                ['N사', '2026-03-05', '74,205'],
+                                ['N사', '2026-03-06', '70,153'],
+                                ['N사', '2026-03-07', '71,733'],
+                                ['N사', '2026-03-08', '72,415'],
+                                ['N사', '2026-03-09', '74,179'],
+                                ['N사', '2026-03-10', '75,037'],
+                                ['N사', '2026-03-11', '73,131'],
+                                ['N사', '2026-03-12', '70,941'],
+                                ['N사', '2026-03-13', '73,285'],
+                                ['N사', '2026-03-14', '68,459'],
+                                ['N사', '2026-03-15', '68,839'],
+                                ['N사', '2026-03-16', '66,366'],
+                                ['N사', '2026-03-17', '70,285'],
+                                ['N사', '2026-03-18', '65,858'],
+                                ['N사', '2026-03-19', '75,070'],
+                                ['N사', '2026-03-20', '69,508'],
+                                ['N사', '2026-03-21', '65,208'],
+                                ['N사', '2026-03-22', '74,786'],
+                                ['N사', '2026-03-23', '29,076']
+                            ]
+                        }
+                    },
+                    {
+                        id: 4,
+                        title: '참고자료 #4: 매체정의표',
+                        type: 'table',
+                        tableData: {
+                            headers: ['채널명', '부가세 포함여부', '금액 단위'],
+                            rows: [
+                                ['N사', 'Y', 'KRW'],
+                                ['R사', 'N', 'KRW'],
+                                ['B사', 'N', 'KRW'],
+                                ['M사', 'N', 'KRW'],
+                                ['K사', 'Y', 'KRW'],
+                                ['G사', 'N', 'KRW'],
+                                ['C사', 'N', 'KRW'],
+                                ['X사', 'N', 'KRW'],
+                                ['L사', 'N', 'USD'],
+                                ['T사', 'N', 'KRW']
+                            ]
+                        }
+                    },
+                    {
+                        id: 5,
+                        title: '참고자료 #5: 수수료율 정보',
+                        type: 'table',
+                        tableData: {
+                            headers: ['고객코드', '고객명', 'N사', 'R사', 'B사', 'M사', 'K사', 'G사', 'C사', 'X사', 'L사', 'T사'],
+                            rows: [
+                                ['BCD', '사단법인 BCD', '0.1', '0.1', '0.15', '0.15', '0.1', '0.15', '0.15', '0.1', '0.15', '0.1']
+                            ]
+                        }
+                    }
+                ],
+                answerTypes: [
+                    { subId: '2-1', type: 'view', viewId: 'view-1', label: '1번 보기 작성' },
+                    { subId: '2-2', type: 'view', viewId: 'view-2', label: '2번 보기 작성' }
+                ]
+            }
+        ];
+
+        // 정답 데이터 (채점 참고용)
+        const ANSWER_DATA = {
+            // 문제 1번 정답
+            1: {
+                'view-1': {
+                    description: '도너스 통합정산서',
+                    cells: {
+                        // 상세 내역 (수정금액)
+                        'D1': '55,000',      // 펀드레이징
+                        'D2': '82,500',      // 커뮤니케이션
+                        'D3': '495,000',     // 확장 서비스
+                        'D4': '51,445',      // 확장 사용량
+                        'D5': '250,000',     // 부가서비스(청구)
+                        'D6': '3,000,000',   // 부가서비스(메시지, 인증)
+                        // 메시지충전금 현황
+                        'L1': '2,500,000',   // 충전금 기초잔액
+                        'L2': '0',           // 당기 충전액
+                        'L3': '-2,500,000',  // 당기 충전금 사용액
+                        'L4': '0',           // 충전금 기말잔액
+                        // 합산 내역
+                        'R1': '683,945',     // A. 기본서비스
+                        'R2': '3,250,000',   // B. 부가서비스
+                        'R4': '3,933,945',   // 합산이용금액
+                        'R5': '-2,500,000',  // - 메시지 충전금 사용액
+                        'R6': '1,433,945'    // 최종청구금액
+                    }
+                },
+                'view-2': {
+                    description: '검토 항목 선택',
+                    cells: {
+                        'item-0': '펀드레이징 에디션 사용료',
+                        'method-0': '변동이력과 구독대장을 비교한다.',
+                        'item-1': '확장사용량 사용료',
+                        'method-1': '상품주문 요청서와 변동이력을 비교한다.',
+                        'item-2': '메시지 충전금 잔액',
+                        'method-2': '지난달 정산대장 메시지 충전금 기말과 이번달 정산대장 메시지 충전금 기초를 비교한다.'
+                    }
+                }
+            },
+            // 문제 2번 정답
+            2: {
+                'view-1': {
+                    description: 'BCD 03월 정산서',
+                    cells: {
+                        // 섹션 A: 광고소재 제작
+                        'A1': '1,890,000',    // 광고소재 A
+                        'A2': '3,500,000',    // 광고소재 B
+                        'SUB_A': '5,390,000', // Sub Total A
+                        // 섹션 B: 온라인 광고 집행
+                        'B1_M': 'G사', 'B1_R': '0.15', 'B1_C': '4,854,603', 'B1_F': '728,190', 'B1_T': '5,582,793',
+                        'B2_M': 'M사', 'B2_R': '0.15', 'B2_C': '17,029,255', 'B2_F': '2,554,388', 'B2_T': '19,583,643',
+                        'B3_M': 'K사', 'B3_R': '0.1', 'B3_C': '4,527,585', 'B3_F': '452,759', 'B3_T': '4,980,344',
+                        'B4_M': 'X사', 'B4_R': '0.1', 'B4_C': '3,148,427', 'B4_F': '314,843', 'B4_T': '3,463,270',
+                        'B5_M': 'N사', 'B5_R': '0.1', 'B5_C': '1,451,900', 'B5_F': '145,190', 'B5_T': '1,597,090',
+                        // 요약
+                        'SUM_A': '5,390,000',
+                        'SUM_B': '35,207,140',
+                        'TOTAL': '40,597,140',
+                        'TOTAL_VAT': '44,656,854'
+                    }
+                },
+                'view-2': {
+                    description: 'BCD 03월 세금계산서',
+                    cells: {
+                        'TAX_TOTAL': '26,000,000'  // 세금계산서 발행금액 (VAT 포함)
+                    }
+                }
+            }
+        };
+
+        // ============================================================
+        // P0 Fix 1: SHA-256 비밀번호 해싱 함수
+        // ============================================================
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // 동기식 해싱 (초기화용) - 간단한 해시 함수
+        function hashPasswordSync(password) {
+            let hash = 0;
+            const str = password + '_tbs_salt_2024';
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            // 더 안전한 해시를 위해 추가 처리
+            const hashStr = Math.abs(hash).toString(16);
+            return 'hashed_' + hashStr.padStart(16, '0');
+        }
+
+        // ============================================================
+        // P0 Fix 3: 전역 에러 핸들러
+        // ============================================================
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.error('전역 에러 발생:', { message, source, lineno, colno, error });
+            // 사용자에게 친화적인 에러 메시지 표시
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = '오류가 발생했습니다. 페이지를 새로고침해주세요.';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 5000);
+            }
+            return false;
+        };
+
+        window.onunhandledrejection = function(event) {
+            console.error('처리되지 않은 Promise 거부:', event.reason);
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = '오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 5000);
+            }
+        };
+
+        // Utility Functions
+        function getFromStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                if (!data) return null;
+                const parsed = JSON.parse(data);
+                return parsed;
+            } catch (error) {
+                console.error(`Error reading from localStorage [${key}]:`, error);
+                // P0 Fix 3: 손상된 데이터 감지 시 해당 키 삭제
+                try {
+                    localStorage.removeItem(key);
+                    console.warn(`손상된 데이터 삭제됨: ${key}`);
+                } catch (e) {}
+                return null;
+            }
+        }
+
+        function setToStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error(`Error writing to localStorage [${key}]:`, error);
+                // P0 Fix 3: localStorage 용량 초과 시 알림
+                if (error.name === 'QuotaExceededError') {
+                    alert('저장 공간이 부족합니다. 브라우저 데이터를 정리해주세요.');
+                }
+                return false;
+            }
+        }
+
+        function getCurrentTimestamp() {
+            return new Date().toISOString();
+        }
+
+        // ============================================================
+        // P0 Fix 2: XSS 방어 강화 - escapeHtml 함수 개선
+        // ============================================================
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            if (typeof str !== 'string') str = String(str);
+            // HTML 특수 문자 이스케이프
+            const escapeMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#x27;',
+                '/': '&#x2F;',
+                '`': '&#x60;',
+                '=': '&#x3D;'
+            };
+            return str.replace(/[&<>"'`=/]/g, char => escapeMap[char]);
+        }
+
+        // 안전한 innerHTML 설정 함수
+        function safeSetInnerHTML(element, html) {
+            // 스크립트 태그 및 이벤트 핸들러 제거
+            const sanitized = html
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                .replace(/on\w+\s*=/gi, 'data-removed=');
+            element.innerHTML = sanitized;
+        }
+
+        // P0 Fix 2: 입력값 검증 함수
+        function validateInput(input, type = 'text') {
+            if (input === null || input === undefined) return { valid: false, value: '' };
+
+            const str = String(input).trim();
+
+            switch (type) {
+                case 'number':
+                    // 숫자만 허용 (콤마, 마이너스, 소수점 포함)
+                    const numStr = str.replace(/[,\s원]/g, '');
+                    const num = parseFloat(numStr);
+                    if (isNaN(num)) return { valid: false, value: 0 };
+                    // 범위 검증 (너무 큰 숫자 방지)
+                    if (Math.abs(num) > 999999999999) return { valid: false, value: 0 };
+                    return { valid: true, value: num };
+
+                case 'id':
+                    // 아이디: 영문, 숫자만 허용 (3-20자)
+                    if (!/^[a-zA-Z0-9]{3,20}$/.test(str)) {
+                        return { valid: false, value: str };
+                    }
+                    return { valid: true, value: str };
+
+                case 'text':
+                default:
+                    // 일반 텍스트: 최대 길이 제한
+                    if (str.length > 10000) {
+                        return { valid: false, value: str.substring(0, 10000) };
+                    }
+                    return { valid: true, value: str };
+            }
+        }
+
+        // Initialize Backend
+        const TBSBackend = {
+            init() {
+                // 항상 최신 사용자 목록으로 업데이트
+                setToStorage(STORAGE_KEYS.USERS, INITIAL_USERS);
+                // Always update problems to ensure latest references are included
+                setToStorage(STORAGE_KEYS.PROBLEMS, PROBLEMS_CANDIDATE);
+                if (!getFromStorage(STORAGE_KEYS.SUBMISSIONS)) {
+                    setToStorage(STORAGE_KEYS.SUBMISSIONS, {});
+                }
+                if (!getFromStorage(STORAGE_KEYS.GRADES)) {
+                    setToStorage(STORAGE_KEYS.GRADES, {});
+                }
+            },
+
+            auth: {
+                // P0 Fix 1: 해시된 비밀번호 비교
+                login(id, password) {
+                    if (!id || !password) {
+                        // P0 Fix 2: 보안상 동일한 메시지 사용
+                        return { success: false, message: '로그인 정보가 올바르지 않습니다.' };
+                    }
+                    const users = getFromStorage(STORAGE_KEYS.USERS) || [];
+                    const inputHash = hashPasswordSync(password);
+                    const user = users.find(u => u.id === id && u.passwordHash === inputHash);
+                    if (!user) {
+                        // P0 Fix 2: 보안상 동일한 에러 메시지 (아이디/비밀번호 구분 안 함)
+                        return { success: false, message: '로그인 정보가 올바르지 않습니다.' };
+                    }
+                    const currentUser = {
+                        id: user.id,
+                        role: user.role,
+                        name: user.name,
+                        loginAt: getCurrentTimestamp()
+                    };
+                    setToStorage(STORAGE_KEYS.CURRENT_USER, currentUser);
+                    return { success: true, message: '로그인 성공', user: currentUser };
+                },
+
+                logout() {
+                    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+                    return { success: true, message: '로그아웃 되었습니다.' };
+                },
+
+                getCurrentUser() {
+                    return getFromStorage(STORAGE_KEYS.CURRENT_USER);
+                },
+
+                isAdmin() {
+                    const user = this.getCurrentUser();
+                    return user && user.role === 'admin';
+                },
+
+                isCandidate() {
+                    const user = this.getCurrentUser();
+                    return user && user.role === 'candidate';
+                }
+            },
+
+            problems: {
+                getAll() {
+                    return getFromStorage(STORAGE_KEYS.PROBLEMS) || [];
+                },
+
+                get(problemId) {
+                    const problems = this.getAll();
+                    return problems.find(p => p.id === problemId) || null;
+                }
+            },
+
+            submissions: {
+                _getKey(userId, problemId) {
+                    return `${userId}_${problemId}`;
+                },
+
+                save(problemId, answer) {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return { success: false, message: '로그인이 필요합니다.' };
+                    if (this.isFinalSubmitted(problemId)) {
+                        return { success: false, message: '이미 최종 제출된 문제입니다.' };
+                    }
+
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const key = this._getKey(currentUser.id, problemId);
+
+                    if (!submissions[key]) {
+                        submissions[key] = {
+                            userId: currentUser.id,
+                            problemId: problemId,
+                            answer: {
+                                views: {},
+                                text: ''
+                            },
+                            isAnswered: false,
+                            isFinalSubmitted: false,
+                            createdAt: getCurrentTimestamp()
+                        };
+                    }
+
+                    submissions[key].answer = answer;
+                    submissions[key].lastSavedAt = getCurrentTimestamp();
+                    setToStorage(STORAGE_KEYS.SUBMISSIONS, submissions);
+                    return { success: true, message: '저장되었습니다.' };
+                },
+
+                // 개별 문제 답변 완료 표시 (재검토 가능)
+                markAnswered(problemId) {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return { success: false, message: '로그인이 필요합니다.' };
+                    if (this.isFinalSubmitted(problemId)) {
+                        return { success: false, message: '이미 최종 제출된 문제입니다.' };
+                    }
+
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const key = this._getKey(currentUser.id, problemId);
+
+                    if (!submissions[key]) {
+                        return { success: false, message: '저장된 답안이 없습니다.' };
+                    }
+
+                    submissions[key].isAnswered = true;
+                    submissions[key].answeredAt = getCurrentTimestamp();
+                    setToStorage(STORAGE_KEYS.SUBMISSIONS, submissions);
+
+                    return { success: true, message: '답변이 완료되었습니다. 목록에서 다시 수정할 수 있습니다.' };
+                },
+
+                // 전체 최종 제출 (모든 문제 접근 차단)
+                finalSubmit() {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return { success: false, message: '로그인이 필요합니다.' };
+
+                    const canSubmit = this.canFinalSubmit();
+                    if (!canSubmit.canSubmit) {
+                        return { success: false, message: canSubmit.reason };
+                    }
+
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const problems = TBSBackend.problems.getAll();
+
+                    problems.forEach(problem => {
+                        const key = this._getKey(currentUser.id, problem.id);
+                        if (submissions[key]) {
+                            submissions[key].isFinalSubmitted = true;
+                            submissions[key].finalSubmittedAt = getCurrentTimestamp();
+                        }
+                    });
+
+                    setToStorage(STORAGE_KEYS.SUBMISSIONS, submissions);
+                    return { success: true, message: '최종 제출이 완료되었습니다. 수고하셨습니다!' };
+                },
+
+                // 최종 제출 가능 여부 확인
+                canFinalSubmit() {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return { canSubmit: false, reason: '로그인이 필요합니다.' };
+
+                    const problems = TBSBackend.problems.getAll();
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+
+                    // 모든 문제가 답변 완료 상태인지 확인
+                    const unansweredProblems = [];
+                    problems.forEach(problem => {
+                        const key = this._getKey(currentUser.id, problem.id);
+                        if (!submissions[key] || !submissions[key].isAnswered) {
+                            unansweredProblems.push(problem.id);
+                        }
+                    });
+
+                    if (unansweredProblems.length > 0) {
+                        return {
+                            canSubmit: false,
+                            reason: `문제 ${unansweredProblems.join(', ')}번의 답변을 완료해주세요.`,
+                            unansweredProblems: unansweredProblems
+                        };
+                    }
+
+                    // 이미 최종 제출되었는지 확인
+                    const alreadyFinalSubmitted = problems.some(problem => {
+                        const key = this._getKey(currentUser.id, problem.id);
+                        return submissions[key]?.isFinalSubmitted === true;
+                    });
+
+                    if (alreadyFinalSubmitted) {
+                        return { canSubmit: false, reason: '이미 최종 제출되었습니다.' };
+                    }
+
+                    return { canSubmit: true, reason: '' };
+                },
+
+                // 개별 문제 최종 제출 상태 확인
+                isFinalSubmitted(problemId) {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return false;
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const key = this._getKey(currentUser.id, problemId);
+                    return submissions[key]?.isFinalSubmitted === true;
+                },
+
+                // 개별 문제 답변 완료 상태 확인
+                isAnswered(problemId) {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return false;
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const key = this._getKey(currentUser.id, problemId);
+                    return submissions[key]?.isAnswered === true;
+                },
+
+                // 하위 호환성을 위한 isSubmitted (isFinalSubmitted와 동일)
+                isSubmitted(problemId) {
+                    return this.isFinalSubmitted(problemId);
+                },
+
+                get(problemId) {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) return null;
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const key = this._getKey(currentUser.id, problemId);
+                    return submissions[key] || null;
+                },
+
+                canAccess(problemId) {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) {
+                        return { canAccess: false, reason: '로그인이 필요합니다.' };
+                    }
+                    // 관리자는 항상 접근 가능
+                    if (currentUser.role === 'admin') {
+                        return { canAccess: true, reason: '' };
+                    }
+                    // 최종 제출된 경우에만 접근 차단 (일반 사용자)
+                    if (this.isFinalSubmitted(problemId)) {
+                        return { canAccess: false, reason: '이미 최종 제출된 문제입니다.' };
+                    }
+                    return { canAccess: true, reason: '' };
+                },
+
+                canCandidateAccess() {
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    if (!currentUser) {
+                        return { canAccess: false, reason: '로그인이 필요합니다.' };
+                    }
+                    // 관리자도 문제 풀기 가능
+                    return { canAccess: true, reason: '' };
+                }
+            },
+
+            admin: {
+                getCandidateList() {
+                    if (!TBSBackend.auth.isAdmin()) return [];
+                    const users = getFromStorage(STORAGE_KEYS.USERS) || [];
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const grades = getFromStorage(STORAGE_KEYS.GRADES) || {};
+                    const problems = getFromStorage(STORAGE_KEYS.PROBLEMS) || [];
+
+                    const candidates = users.filter(u => u.role === 'candidate');
+
+                    return candidates.map(candidate => {
+                        const userSubmissions = Object.values(submissions)
+                            .filter(s => s.userId === candidate.id && (s.isAnswered || s.isFinalSubmitted));
+                        const userGrades = Object.values(grades)
+                            .filter(g => g.userId === candidate.id);
+                        const avgScore = userGrades.length > 0
+                            ? userGrades.reduce((sum, g) => sum + g.score, 0) / userGrades.length
+                            : null;
+
+                        return {
+                            id: candidate.id,
+                            name: candidate.name,
+                            submittedCount: userSubmissions.length,
+                            totalProblems: problems.length,
+                            gradedCount: userGrades.length,
+                            averageScore: avgScore ? Math.round(avgScore * 10) / 10 : null
+                        };
+                    });
+                },
+
+                getCandidateDetail(userId) {
+                    if (!TBSBackend.auth.isAdmin()) return null;
+                    const users = getFromStorage(STORAGE_KEYS.USERS) || [];
+                    const user = users.find(u => u.id === userId && u.role === 'candidate');
+                    if (!user) return null;
+
+                    const submissions = getFromStorage(STORAGE_KEYS.SUBMISSIONS) || {};
+                    const grades = getFromStorage(STORAGE_KEYS.GRADES) || {};
+                    const problems = TBSBackend.problems.getAll();
+
+                    const userSubmissions = Object.values(submissions).filter(s => s.userId === userId);
+                    const userGrades = Object.values(grades).filter(g => g.userId === userId);
+
+                    return {
+                        id: user.id,
+                        name: user.name,
+                        problems: problems.map(p => {
+                            const submission = userSubmissions.find(s => s.problemId === p.id);
+                            const grade = userGrades.find(g => g.problemId === p.id);
+                            return {
+                                problemId: p.id,
+                                problemTitle: p.title,
+                                submitted: submission?.isAnswered || submission?.isFinalSubmitted || false,
+                                finalSubmitted: submission?.isFinalSubmitted || false,
+                                submittedAt: submission?.answeredAt || submission?.finalSubmittedAt || null,
+                                answer: submission?.answer || null,
+                                graded: !!grade,
+                                score: grade?.score || null,
+                                weaknessTags: grade?.weaknessTags || [],
+                                feedback: grade?.feedback || ''
+                            };
+                        })
+                    };
+                },
+
+                saveGrade(userId, problemId, score, weaknessTags = [], feedback = '') {
+                    if (!TBSBackend.auth.isAdmin()) {
+                        return { success: false, message: '관리자 권한이 필요합니다.' };
+                    }
+                    const currentUser = TBSBackend.auth.getCurrentUser();
+                    const grades = getFromStorage(STORAGE_KEYS.GRADES) || {};
+                    const key = `${userId}_${problemId}`;
+
+                    grades[key] = {
+                        userId: userId,
+                        problemId: problemId,
+                        score: Math.min(100, Math.max(0, score)),
+                        weaknessTags: weaknessTags,
+                        feedback: feedback,
+                        gradedAt: getCurrentTimestamp(),
+                        gradedBy: currentUser.id
+                    };
+
+                    setToStorage(STORAGE_KEYS.GRADES, grades);
+                    return { success: true, message: '채점 결과가 저장되었습니다.' };
+                },
+
+                getWeaknessStats() {
+                    if (!TBSBackend.auth.isAdmin()) return {};
+                    const grades = getFromStorage(STORAGE_KEYS.GRADES) || {};
+                    const stats = {};
+
+                    Object.values(grades).forEach(grade => {
+                        if (grade.weaknessTags && Array.isArray(grade.weaknessTags)) {
+                            grade.weaknessTags.forEach(tag => {
+                                stats[tag] = (stats[tag] || 0) + 1;
+                            });
+                        }
+                    });
+
+                    return stats;
+                }
+            }
+        };
+
+        // Initialize on load
+        TBSBackend.init();
+
+        // ============================================================
+        // UI Components & App Logic
+        // ============================================================
+
+        class App {
+            constructor() {
+                this.currentView = 'login';
+                this.currentProblemId = null;
+                this.currentAnswer = {
+                    views: {},
+                    text: ''
+                };
+                this.autoSaveInterval = null;
+                this.render();
+            }
+
+            render() {
+                const app = document.getElementById('app');
+                const currentUser = TBSBackend.auth.getCurrentUser();
+
+                if (!currentUser) {
+                    app.innerHTML = this.renderLogin();
+                    this.attachLoginHandlers();
+                } else if (currentUser.role === 'admin') {
+                    // 관리자: 대시보드 또는 문제 풀기 화면
+                    if (this.currentView === 'problemList') {
+                        app.innerHTML = this.renderProblemList();
+                        this.attachProblemListHandlers();
+                    } else if (this.currentView === 'problemView') {
+                        app.innerHTML = this.renderProblemView(this.currentProblemId);
+                        this.attachProblemViewHandlers();
+                    } else {
+                        // 기본: 관리자 대시보드
+                        app.innerHTML = this.renderAdminDashboard();
+                        this.attachAdminHandlers();
+                    }
+                } else {
+                    const accessCheck = TBSBackend.submissions.canCandidateAccess();
+                    if (!accessCheck.canAccess) {
+                        app.innerHTML = `
+                            <div class="container">
+                                <div class="card">
+                                    <h2>접근 거부</h2>
+                                    <p>${escapeHtml(accessCheck.reason)}</p>
+                                    <button class="btn btn-primary" onclick="app.logout()">
+                                        로그아웃
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    if (this.currentView === 'problemList') {
+                        app.innerHTML = this.renderProblemList();
+                        this.attachProblemListHandlers();
+                    } else if (this.currentView === 'problemView') {
+                        app.innerHTML = this.renderProblemView(this.currentProblemId);
+                        this.attachProblemViewHandlers();
+                    } else {
+                        this.currentView = 'problemList';
+                        this.render();
+                    }
+                }
+            }
+
+            renderLogin() {
+                return `
+                    <div class="login-container">
+                        <div class="login-card">
+                            <h1 class="login-title">사업지원팀 1차면접과제</h1>
+                            <form id="loginForm">
+                                <div class="form-group">
+                                    <label for="userId" class="form-label">아이디</label>
+                                    <input
+                                        type="text"
+                                        id="userId"
+                                        class="form-input"
+                                        placeholder="아이디를 입력하세요"
+                                        required
+                                    >
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="form-label">비밀번호</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        class="form-input"
+                                        placeholder="비밀번호를 입력하세요"
+                                        required
+                                    >
+                                </div>
+                                <div id="loginError" class="error-message"></div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    로그인
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderProblemList() {
+                const currentUser = TBSBackend.auth.getCurrentUser();
+                const isAdmin = currentUser.role === 'admin';
+                const problems = TBSBackend.problems.getAll();
+                const canFinalSubmit = TBSBackend.submissions.canFinalSubmit();
+
+                const problemCards = problems.map(problem => {
+                    const isFinalSubmitted = TBSBackend.submissions.isFinalSubmitted(problem.id);
+                    const isAnswered = TBSBackend.submissions.isAnswered(problem.id);
+
+                    let statusClass, statusText;
+                    if (isFinalSubmitted) {
+                        statusClass = 'status-final-submitted';
+                        statusText = '최종제출완료';
+                    } else if (isAnswered) {
+                        statusClass = 'status-answered';
+                        statusText = '답변완료';
+                    } else {
+                        statusClass = 'status-pending';
+                        statusText = '미시작';
+                    }
+
+                    // 관리자는 항상 클릭 가능
+                    const clickable = isAdmin || !isFinalSubmitted;
+                    const cardStyle = (!isAdmin && isFinalSubmitted) ? 'cursor: not-allowed; opacity: 0.7;' : '';
+
+                    return `
+                        <div class="problem-card" ${clickable ? `onclick="app.viewProblem(${problem.id})"` : ''} style="${cardStyle}">
+                            <div class="problem-number">문제 ${problem.id}번</div>
+                            <div class="problem-title">${escapeHtml(problem.title)}</div>
+                            <div class="problem-status ${statusClass}">${statusText}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                // 최종 제출 섹션 (관리자는 표시하지 않음)
+                let finalSubmitSection = '';
+
+                if (!isAdmin) {
+                    const anyFinalSubmitted = problems.some(p => TBSBackend.submissions.isFinalSubmitted(p.id));
+
+                    if (!anyFinalSubmitted) {
+                        const btnDisabled = !canFinalSubmit.canSubmit ? 'disabled' : '';
+                        const btnMessage = canFinalSubmit.canSubmit
+                            ? '모든 문제의 답변이 완료되었습니다. 최종 제출하면 더 이상 답안을 수정할 수 없습니다.'
+                            : canFinalSubmit.reason;
+
+                        finalSubmitSection = `
+                            <div class="final-submit-section">
+                                <h3>최종 제출</h3>
+                                <p>${escapeHtml(btnMessage)}</p>
+                                <button class="btn btn-final-submit" onclick="app.finalSubmitAll()" ${btnDisabled}>
+                                    최종 제출하기
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        finalSubmitSection = `
+                            <div class="final-submit-section" style="background: #f0fdf4; border-color: #22c55e;">
+                                <h3 style="color: #166534;">최종 제출 완료</h3>
+                                <p style="color: #15803d;">모든 문제가 최종 제출되었습니다. 수고하셨습니다!</p>
+                            </div>
+                        `;
+                    }
+                }
+
+                const adminButton = isAdmin
+                    ? `<button class="btn btn-primary btn-sm" onclick="app.goToAdminDashboard()">관리자 대시보드</button>`
+                    : '';
+
+                return `
+                    <div class="app-header">
+                        <div class="header-content">
+                            <h1 class="app-title">사업지원팀 1차면접과제</h1>
+                            <div class="user-info">
+                                <span class="user-name">${escapeHtml(currentUser.name)}님</span>
+                                ${adminButton}
+                                <button class="btn btn-secondary btn-sm" onclick="app.logout()">
+                                    로그아웃
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <h2 class="card-title">문제 목록</h2>
+                        <div class="problem-list">
+                            ${problemCards}
+                        </div>
+                        ${finalSubmitSection}
+                    </div>
+                `;
+            }
+
+            renderProblemView(problemId) {
+                const currentUser = TBSBackend.auth.getCurrentUser();
+                const problem = TBSBackend.problems.get(problemId);
+                const accessCheck = TBSBackend.submissions.canAccess(problemId);
+
+                if (!problem) {
+                    return `
+                        <div class="container">
+                            <h2>문제를 찾을 수 없습니다.</h2>
+                            <button class="btn btn-primary" onclick="app.backToProblemList()">
+                                목록으로 돌아가기
+                            </button>
+                        </div>
+                    `;
+                }
+
+                if (!accessCheck.canAccess) {
+                    return `
+                        <div class="app-header">
+                            <div class="header-content">
+                                <h1 class="app-title">사업지원팀 1차면접과제</h1>
+                                <div class="user-info">
+                                    <span class="user-name">${escapeHtml(currentUser.name)}님</span>
+                                    <button class="btn btn-secondary btn-sm" onclick="app.logout()">
+                                        로그아웃
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="submitted-screen">
+                                <div class="submitted-icon">✓</div>
+                                <h2 class="submitted-title">제출 완료</h2>
+                                <p class="submitted-message">이 문제는 이미 제출되었습니다.</p>
+                                <button class="btn btn-primary mt-3" onclick="app.backToProblemList()">
+                                    목록으로 돌아가기
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Load saved answer
+                const submission = TBSBackend.submissions.get(problemId);
+                if (submission && submission.answer) {
+                    this.currentAnswer = submission.answer;
+                }
+
+                // Render problem content
+                const contentHtml = this.renderFormattedContent(problem.content);
+
+                // Render views (보기)
+                const viewsHtml = problem.views.map(view => this.renderView(view)).join('');
+
+                // Render references (참고자료 아코디언)
+                const referencesHtml = this.renderReferences(problem.references);
+
+                // Render text answer section if exists
+                const textAnswerHtml = problem.answerTypes.some(at => at.type === 'text') ?
+                    `<div class="answer-section">
+                        <div class="section-header">
+                            <span>✍️</span>
+                            <span>【 답안 작성 】</span>
+                        </div>
+                        <div class="section-content">
+                            <label class="answer-label">세금계산서 발행 금액 (서술형)</label>
+                            <textarea
+                                id="answer-text"
+                                class="answer-textarea"
+                                placeholder="답안을 입력하세요..."
+                            >${escapeHtml(this.currentAnswer.text || '')}</textarea>
+                        </div>
+                    </div>` : '';
+
+                return `
+                    <div class="app-header">
+                        <div class="header-content">
+                            <h1 class="app-title">사업지원팀 1차면접과제</h1>
+                            <div class="user-info">
+                                <span class="user-name">${escapeHtml(currentUser.name)}님</span>
+                                <button class="btn btn-secondary btn-sm" onclick="app.logout()">
+                                    로그아웃
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <button class="btn btn-secondary btn-sm" onclick="app.backToProblemList()">
+                            ← 목록으로
+                        </button>
+
+                        <div class="problem-content">
+                            <div class="section-header">
+                                <span>📋</span>
+                                <span>【 문제 】</span>
+                            </div>
+                            <div class="section-content">
+                                ${contentHtml}
+                            </div>
+
+                            ${viewsHtml}
+
+                            ${referencesHtml}
+
+                            ${textAnswerHtml}
+
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" onclick="app.saveAnswer(${problemId})">
+                                    임시저장
+                                </button>
+                                <button class="btn btn-primary" onclick="app.submitAnswer(${problemId})">
+                                    답변 완료
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderFormattedContent(content) {
+                const lines = content.split('\n');
+                let html = '';
+                let inRequirements = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+
+                    if (line.startsWith('요구사항')) {
+                        if (inRequirements) {
+                            html += '</div>';
+                        }
+                        html += `<div class="section-header mt-3"><span>✅</span><span>【 요구사항 】</span></div>`;
+                        html += '<div class="requirement-box">';
+                        inRequirements = true;
+                    } else if (inRequirements && line.match(/^\d+\./)) {
+                        html += `<div class="requirement-item">${escapeHtml(line)}</div>`;
+                    } else if (line.startsWith('•')) {
+                        html += `<div class="context-box">${escapeHtml(line)}</div>`;
+                    } else if (line) {
+                        html += `<p style="margin-bottom: 12px;">${escapeHtml(line)}</p>`;
+                    }
+                }
+
+                if (inRequirements) {
+                    html += '</div>';
+                }
+
+                return html;
+            }
+
+            renderView(view) {
+                let contentHtml = '';
+
+                if (view.type === 'word-document' && view.wordData) {
+                    contentHtml = this.renderWordDocument(view.wordData, view.id);
+                } else if (view.type === 'dropdown-table' && view.tableData) {
+                    contentHtml = this.renderDropdownTable(view.tableData, view.id);
+                } else if (view.type === 'settlement-form' && view.formData) {
+                    contentHtml = this.renderSettlementForm(view.formData, view.id);
+                } else if (view.tableData) {
+                    contentHtml = this.renderEditableTable(view.tableData, view.id);
+                }
+
+                return `
+                    <div class="view-section">
+                        <div class="view-header">
+                            <span>📝</span>
+                            <span>【 ${escapeHtml(view.title)} 】</span>
+                            <span class="view-subtitle">${escapeHtml(view.subtitle)}</span>
+                        </div>
+                        <div class="view-body">
+                            ${contentHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderDropdownTable(tableData, viewId) {
+                if (!this.currentAnswer.views[viewId]) {
+                    this.currentAnswer.views[viewId] = { cells: {} };
+                }
+
+                let html = '<table class="dropdown-table">';
+
+                // Header
+                html += '<thead><tr>';
+                tableData.headers.forEach(header => {
+                    html += `<th>${escapeHtml(header)}</th>`;
+                });
+                html += '</tr></thead>';
+
+                // Body
+                html += '<tbody>';
+                tableData.rows.forEach((row, index) => {
+                    const savedItemValue = this.currentAnswer.views[viewId].cells[row.itemAddress] || '';
+                    const savedMethodValue = this.currentAnswer.views[viewId].cells[row.methodAddress] || '';
+
+                    html += '<tr>';
+                    html += `<td class="row-label">${escapeHtml(row.label)}</td>`;
+
+                    // 관련 항목 드롭다운
+                    html += '<td>';
+                    html += `<select data-view="${viewId}" data-cell="${row.itemAddress}" onchange="app.handleCellInput(event)">`;
+                    html += '<option value="">-- 선택하세요 --</option>';
+                    tableData.dropdownOptions.relatedItems.forEach(item => {
+                        const selected = savedItemValue === item ? 'selected' : '';
+                        html += `<option value="${escapeHtml(item)}" ${selected}>${escapeHtml(item)}</option>`;
+                    });
+                    html += '</select>';
+                    html += '</td>';
+
+                    // 검토 방법 드롭다운
+                    html += '<td>';
+                    html += `<select data-view="${viewId}" data-cell="${row.methodAddress}" onchange="app.handleCellInput(event)">`;
+                    html += '<option value="">-- 선택하세요 --</option>';
+                    tableData.dropdownOptions.reviewMethods.forEach(method => {
+                        const selected = savedMethodValue === method ? 'selected' : '';
+                        html += `<option value="${escapeHtml(method)}" ${selected}>${escapeHtml(method)}</option>`;
+                    });
+                    html += '</select>';
+                    html += '</td>';
+
+                    html += '</tr>';
+                });
+                html += '</tbody>';
+
+                html += '</table>';
+                return html;
+            }
+
+            renderSettlementForm(formData, viewId) {
+                if (!this.currentAnswer.views[viewId]) {
+                    this.currentAnswer.views[viewId] = { cells: {} };
+                }
+
+                let html = `<div class="settlement-form" data-view-id="${viewId}">`;
+                html += `<div class="form-title">${escapeHtml(formData.title)}</div>`;
+
+                // 요약 테이블
+                html += '<table>';
+                html += '<thead><tr>';
+                formData.summary.headers.forEach(h => {
+                    html += `<th>${escapeHtml(h)}</th>`;
+                });
+                html += '</tr></thead><tbody>';
+                formData.summary.rows.forEach((row, idx) => {
+                    const rowClass = row.label === 'Total' ? 'total-row' : (row.label.includes('VAT') ? 'vat-row' : '');
+                    html += `<tr class="${rowClass}">`;
+                    html += `<td class="row-label">${escapeHtml(row.label)}</td>`;
+                    html += `<td class="auto-calc" data-calc-cell="${row.address}">0</td>`;
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+
+                // 섹션 A: 광고소재 제작
+                html += `<div class="section-title">${escapeHtml(formData.sectionA.title)}</div>`;
+                html += '<table>';
+                html += '<thead><tr>';
+                formData.sectionA.headers.forEach(h => {
+                    html += `<th>${escapeHtml(h)}</th>`;
+                });
+                html += '</tr></thead><tbody>';
+                formData.sectionA.rows.forEach(row => {
+                    const savedValue = this.currentAnswer.views[viewId].cells[row.address] || '';
+                    html += '<tr>';
+                    html += `<td class="row-label">${escapeHtml(row.label)}</td>`;
+                    html += `<td>${escapeHtml(row.basis)}</td>`;
+                    html += `<td><input type="text" data-view="${viewId}" data-cell="${row.address}" value="${escapeHtml(savedValue)}" oninput="app.handleSettlementInput(event, '${viewId}')" placeholder="금액 입력"></td>`;
+                    html += '</tr>';
+                });
+                html += `<tr class="subtotal-row">`;
+                html += `<td colspan="2" class="row-label">${escapeHtml(formData.sectionA.subtotal.label)}</td>`;
+                html += `<td class="auto-calc" data-calc-cell="${formData.sectionA.subtotal.address}">0</td>`;
+                html += '</tr>';
+                html += '</tbody></table>';
+
+                // 섹션 B: 온라인 광고 집행
+                html += `<div class="section-title">${escapeHtml(formData.sectionB.title)}</div>`;
+                html += '<table>';
+                html += '<thead><tr>';
+                formData.sectionB.headers.forEach(h => {
+                    html += `<th>${escapeHtml(h)}</th>`;
+                });
+                html += '</tr></thead><tbody>';
+                formData.sectionB.rows.forEach((row, idx) => {
+                    const savedMedia = this.currentAnswer.views[viewId].cells[row.mediaAddress] || '';
+                    const savedRate = this.currentAnswer.views[viewId].cells[row.rateAddress] || '';
+                    const savedCost = this.currentAnswer.views[viewId].cells[row.costAddress] || '';
+                    html += '<tr>';
+                    // 매체 선택
+                    html += '<td>';
+                    html += `<select data-view="${viewId}" data-cell="${row.mediaAddress}" data-row-idx="${idx}" onchange="app.handleSettlementSelect(event, '${viewId}')">`;
+                    html += '<option value="">-- 선택 --</option>';
+                    formData.sectionB.mediaOptions.forEach(media => {
+                        const selected = savedMedia === media ? 'selected' : '';
+                        html += `<option value="${escapeHtml(media)}" ${selected}>${escapeHtml(media)}</option>`;
+                    });
+                    html += '</select>';
+                    html += '</td>';
+                    // 수수료율 선택
+                    html += '<td>';
+                    html += `<select data-view="${viewId}" data-cell="${row.rateAddress}" onchange="app.handleSettlementSelect(event, '${viewId}')">`;
+                    html += '<option value="">-- 선택 --</option>';
+                    formData.sectionB.feeRateOptions.forEach(rate => {
+                        const ratePercent = (rate * 100).toFixed(0) + '%';
+                        const selected = savedRate === String(rate) ? 'selected' : '';
+                        html += `<option value="${rate}" ${selected}>${ratePercent}</option>`;
+                    });
+                    html += '</select>';
+                    html += '</td>';
+                    // 실집행 광고비
+                    html += `<td><input type="text" data-view="${viewId}" data-cell="${row.costAddress}" value="${escapeHtml(savedCost)}" oninput="app.handleSettlementInput(event, '${viewId}')" placeholder="광고비 입력"></td>`;
+                    // 수수료 (자동)
+                    html += `<td class="auto-calc" data-calc-cell="${row.feeAddress}">0</td>`;
+                    // 공급가 (자동)
+                    html += `<td class="auto-calc" data-calc-cell="${row.totalAddress}">0</td>`;
+                    html += '</tr>';
+                });
+                html += `<tr class="subtotal-row">`;
+                html += `<td colspan="2" class="row-label">${escapeHtml(formData.sectionB.subtotal.label)}</td>`;
+                html += `<td class="auto-calc" data-calc-cell="${formData.sectionB.subtotal.costAddress}">0</td>`;
+                html += `<td class="auto-calc" data-calc-cell="${formData.sectionB.subtotal.feeAddress}">0</td>`;
+                html += `<td class="auto-calc" data-calc-cell="${formData.sectionB.subtotal.totalAddress}">0</td>`;
+                html += '</tr>';
+                html += '</tbody></table>';
+
+                html += '</div>';
+
+                // 폼 데이터를 전역에 저장
+                this.settlementFormData = formData;
+
+                return html;
+            }
+
+            handleSettlementInput(event, viewId) {
+                this.handleCellInput(event);
+                this.updateSettlementCalc(viewId);
+            }
+
+            handleSettlementSelect(event, viewId) {
+                this.handleCellInput(event);
+                this.updateSettlementCalc(viewId);
+            }
+
+            updateSettlementCalc(viewId) {
+                const cells = this.currentAnswer.views[viewId]?.cells || {};
+                const formData = this.settlementFormData;
+                if (!formData) return;
+
+                const parseNumber = (str) => {
+                    if (!str) return 0;
+                    const cleaned = String(str).replace(/[,원\s]/g, '');
+                    return parseFloat(cleaned) || 0;
+                };
+
+                const formatNumber = (num) => {
+                    return Math.round(num).toLocaleString('ko-KR');
+                };
+
+                // 섹션 A 계산
+                let sumA = 0;
+                formData.sectionA.rows.forEach(row => {
+                    sumA += parseNumber(cells[row.address]);
+                });
+                const subACell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${formData.sectionA.subtotal.address}"]`);
+                if (subACell) subACell.textContent = formatNumber(sumA);
+
+                // 섹션 B 계산
+                let sumBCost = 0, sumBFee = 0, sumBTotal = 0;
+                formData.sectionB.rows.forEach(row => {
+                    const cost = parseNumber(cells[row.costAddress]);
+                    const feeRate = parseFloat(cells[row.rateAddress]) || 0;
+                    const fee = Math.round(cost * feeRate);
+                    const total = cost + fee;
+
+                    sumBCost += cost;
+                    sumBFee += fee;
+                    sumBTotal += total;
+
+                    // 개별 행 업데이트
+                    const feeCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${row.feeAddress}"]`);
+                    const totalCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${row.totalAddress}"]`);
+                    if (feeCell) feeCell.textContent = formatNumber(fee);
+                    if (totalCell) totalCell.textContent = formatNumber(total);
+
+                    // 값 저장
+                    this.currentAnswer.views[viewId].cells[row.feeAddress] = formatNumber(fee);
+                    this.currentAnswer.views[viewId].cells[row.totalAddress] = formatNumber(total);
+                });
+
+                // 섹션 B Sub Total
+                const subBCostCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${formData.sectionB.subtotal.costAddress}"]`);
+                const subBFeeCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${formData.sectionB.subtotal.feeAddress}"]`);
+                const subBTotalCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${formData.sectionB.subtotal.totalAddress}"]`);
+                if (subBCostCell) subBCostCell.textContent = formatNumber(sumBCost);
+                if (subBFeeCell) subBFeeCell.textContent = formatNumber(sumBFee);
+                if (subBTotalCell) subBTotalCell.textContent = formatNumber(sumBTotal);
+
+                // 요약 계산
+                const total = sumA + sumBTotal;
+                const totalVat = Math.round(total * 1.1);
+
+                const sumACell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="SUM_A"]`);
+                const sumBCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="SUM_B"]`);
+                const totalCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="TOTAL"]`);
+                const totalVatCell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="TOTAL_VAT"]`);
+
+                if (sumACell) sumACell.textContent = formatNumber(sumA);
+                if (sumBCell) sumBCell.textContent = formatNumber(sumBTotal);
+                if (totalCell) totalCell.textContent = formatNumber(total);
+                if (totalVatCell) totalVatCell.textContent = formatNumber(totalVat);
+
+                // 계산값 저장
+                this.currentAnswer.views[viewId].cells['SUM_A'] = formatNumber(sumA);
+                this.currentAnswer.views[viewId].cells['SUM_B'] = formatNumber(sumBTotal);
+                this.currentAnswer.views[viewId].cells['TOTAL'] = formatNumber(total);
+                this.currentAnswer.views[viewId].cells['TOTAL_VAT'] = formatNumber(totalVat);
+            }
+
+            renderWordDocument(wordData, viewId) {
+                if (!this.currentAnswer.views[viewId]) {
+                    this.currentAnswer.views[viewId] = { cells: {} };
+                }
+
+                let html = '<div class="word-document" data-view-id="' + viewId + '">';
+
+                // 제목
+                html += `<div class="word-title">${escapeHtml(wordData.title)}</div>`;
+
+                // 정산일자
+                html += `<div class="word-date">${escapeHtml(wordData.date)}</div>`;
+
+                // 안내문구
+                html += '<div class="word-notice">';
+                wordData.notices.forEach(notice => {
+                    html += `<p>${escapeHtml(notice)}</p>`;
+                });
+                html += '</div>';
+
+                // 고객정보 테이블
+                if (wordData.customerInfo) {
+                    html += '<table class="word-table">';
+                    html += '<thead><tr>';
+                    wordData.customerInfo.headers.forEach(header => {
+                        html += `<th>${escapeHtml(header)}</th>`;
+                    });
+                    html += '</tr></thead>';
+                    html += '<tbody>';
+                    wordData.customerInfo.rows.forEach(row => {
+                        html += '<tr>';
+                        row.forEach(cell => {
+                            html += `<td>${escapeHtml(cell)}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                }
+
+                // 상세내역 테이블 (수정 가능한 열 포함)
+                if (wordData.detailItems) {
+                    html += '<table class="word-table">';
+                    html += '<thead><tr><th>구분</th><th>분류</th><th>설명</th><th>기존 금액</th><th>수정 금액</th></tr></thead>';
+                    html += '<tbody>';
+                    wordData.detailItems.forEach(item => {
+                        const savedValue = this.currentAnswer.views[viewId].cells[item.address] || '';
+                        html += '<tr>';
+                        html += `<td class="section-header-cell">${escapeHtml(item.category)}</td>`;
+                        html += `<td>${escapeHtml(item.type)}</td>`;
+                        html += `<td>${escapeHtml(item.description)}</td>`;
+                        html += `<td>${escapeHtml(item.originalAmount)}</td>`;
+                        html += `<td class="editable-cell">
+                            <input type="text"
+                                   data-view="${viewId}"
+                                   data-cell="${item.address}"
+                                   data-original-value="${escapeHtml(item.originalAmount)}"
+                                   value="${escapeHtml(savedValue)}"
+                                   oninput="app.handleWordDocInput(event, '${viewId}')"
+                                   placeholder="수정금액 입력">
+                        </td>`;
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table>';
+                }
+
+                // 합산내역 테이블
+                if (wordData.summary) {
+                    html += '<table class="word-summary-table">';
+                    html += '<tr>';
+
+                    // 왼쪽 섹션: 메시지충전금 현황
+                    html += '<td class="left-section">';
+                    html += '<table class="word-table" style="width:100%;">';
+                    html += `<tr><td colspan="3" class="highlight-cell">${escapeHtml(wordData.summary.leftSection.title)}</td></tr>`;
+                    html += '<tr><th style="width:40%;">항목</th><th style="width:30%;">기존 금액</th><th style="width:30%;">수정 금액</th></tr>';
+                    wordData.summary.leftSection.items.forEach(item => {
+                        const savedValue = this.currentAnswer.views[viewId].cells[item.address] || '';
+                        html += '<tr>';
+                        html += `<td>${escapeHtml(item.label)}</td>`;
+                        if (item.editable) {
+                            html += `<td style="text-align:right;">${escapeHtml(item.originalValue)}</td>`;
+                            html += `<td class="editable-cell">
+                                <input type="text"
+                                       data-view="${viewId}"
+                                       data-cell="${item.address}"
+                                       data-original-value="${escapeHtml(item.originalValue)}"
+                                       value="${escapeHtml(savedValue)}"
+                                       oninput="app.handleWordDocInput(event, '${viewId}')"
+                                       placeholder="수정금액">
+                            </td>`;
+                        } else if (item.fixedValue) {
+                            html += `<td style="text-align:right;">${escapeHtml(item.fixedValue)}</td>`;
+                            html += `<td style="text-align:right; background:#f5f5f5; color:#9ca3af;">${escapeHtml(item.fixedValue)}</td>`;
+                        } else if (item.autoCalc) {
+                            html += `<td style="text-align:right;">-</td>`;
+                            html += `<td style="text-align:right; background:#e8f5e9;" data-calc-cell="${item.address}" data-calc-formula="${item.autoCalc}">자동계산</td>`;
+                        }
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                    html += '</td>';
+
+                    // 오른쪽 섹션: 합산 내역
+                    html += '<td class="right-section">';
+                    html += '<table class="word-table" style="width:100%;">';
+                    html += `<tr><td colspan="2" class="highlight-cell">${escapeHtml(wordData.summary.rightSection.title)}</td></tr>`;
+                    wordData.summary.rightSection.items.forEach(item => {
+                        const highlightClass = item.highlight ? 'highlight-cell' : '';
+                        const savedValue = this.currentAnswer.views[viewId].cells[item.address] || '';
+                        html += '<tr>';
+                        html += `<td class="${highlightClass}">${escapeHtml(item.label)}</td>`;
+                        if (item.editable) {
+                            html += `<td class="${highlightClass} editable-cell">
+                                <input type="text"
+                                       data-view="${viewId}"
+                                       data-cell="${item.address}"
+                                       value="${escapeHtml(savedValue)}"
+                                       oninput="app.handleWordDocInput(event, '${viewId}')"
+                                       placeholder="수정금액">
+                            </td>`;
+                        } else if (item.autoCalc) {
+                            const bgStyle = item.highlight ? 'background:#fff9c4;' : 'background:#e8f5e9;';
+                            html += `<td class="${highlightClass}" style="text-align:right; ${bgStyle}" data-calc-cell="${item.address}" data-calc-formula="${item.autoCalc}">자동계산</td>`;
+                        }
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                    html += '</td>';
+
+                    html += '</tr></table>';
+                }
+
+                html += '</div>';
+                return html;
+            }
+
+            handleWordDocInput(event, viewId) {
+                // 기본 cell input 처리
+                this.handleCellInput(event);
+                // 자동 계산 업데이트
+                this.updateWordDocCalcFields(viewId);
+            }
+
+            updateWordDocCalcFields(viewId) {
+                const cells = this.currentAnswer.views[viewId]?.cells || {};
+
+                // 숫자 파싱 함수 (콤마, 원, 공백 제거)
+                const parseNumber = (str) => {
+                    if (!str) return 0;
+                    const cleaned = String(str).replace(/[,원\s]/g, '');
+                    const num = parseFloat(cleaned);
+                    return isNaN(num) ? 0 : num;
+                };
+
+                // 숫자 포맷팅 함수
+                const formatNumber = (num) => {
+                    if (num === 0) return '0 원';
+                    const formatted = Math.round(num).toLocaleString('ko-KR');
+                    return (num < 0 ? '' : '') + formatted + ' 원';
+                };
+
+                // 모든 자동 계산 셀 찾기
+                const calcCells = document.querySelectorAll(`[data-view-id="${viewId}"] [data-calc-cell]`);
+
+                // 계산된 값 저장소
+                const calcValues = {};
+
+                // 고정값 설정 (L2 = 당기 충전액 = 0)
+                calcValues['L2'] = 0;
+
+                // 모든 입력 필드에서 값 수집 (수정금액이 없으면 기존 금액 사용)
+                const inputFields = document.querySelectorAll(`[data-view-id="${viewId}"] input[data-cell]`);
+                inputFields.forEach(input => {
+                    const addr = input.dataset.cell;
+                    const inputValue = input.value.trim();
+                    const originalValue = input.dataset.originalValue;
+
+                    // 수정금액이 있으면 수정금액 사용, 없으면 기존 금액 사용
+                    if (inputValue) {
+                        calcValues[addr] = parseNumber(inputValue);
+                    } else if (originalValue) {
+                        calcValues[addr] = parseNumber(originalValue);
+                    }
+                });
+
+                // 수식 계산 함수
+                const calculateFormula = (formula) => {
+                    // -MIN(L1,D6) 형태 처리
+                    if (formula.startsWith('-MIN(')) {
+                        const match = formula.match(/-MIN\(([^,]+),([^)]+)\)/);
+                        if (match) {
+                            const val1 = calcValues[match[1].trim()] || 0;
+                            const val2 = calcValues[match[2].trim()] || 0;
+                            return -Math.min(val1, val2);
+                        }
+                    }
+                    // 일반 덧셈 수식 처리
+                    const parts = formula.split('+');
+                    let result = 0;
+                    parts.forEach(part => {
+                        const addr = part.trim();
+                        if (calcValues[addr] !== undefined) {
+                            result += calcValues[addr];
+                        }
+                    });
+                    return result;
+                };
+
+                // 자동 계산 수행 (의존성 순서대로: L3 먼저, 그다음 L4, R1, R2, R4, R5, R6)
+                const calcOrder = ['L3', 'L4', 'R1', 'R2', 'R4', 'R5', 'R6'];
+
+                calcOrder.forEach(addr => {
+                    const cell = document.querySelector(`[data-view-id="${viewId}"] [data-calc-cell="${addr}"]`);
+                    if (cell) {
+                        const formula = cell.dataset.calcFormula;
+                        if (formula) {
+                            const result = calculateFormula(formula);
+                            calcValues[addr] = result;
+                            cell.textContent = formatNumber(result);
+                            // 계산된 값도 저장
+                            this.currentAnswer.views[viewId].cells[addr] = formatNumber(result);
+                        }
+                    }
+                });
+            }
+
+            renderEditableTable(tableData, viewId) {
+                if (!this.currentAnswer.views[viewId]) {
+                    this.currentAnswer.views[viewId] = { cells: {} };
+                }
+
+                let html = '<table class="editable-table">';
+
+                // Header
+                html += '<thead><tr>';
+                tableData.headers.forEach(header => {
+                    html += `<th>${escapeHtml(header)}</th>`;
+                });
+                html += '</tr></thead>';
+
+                // Body
+                html += '<tbody>';
+                tableData.rows.forEach(row => {
+                    html += '<tr>';
+                    row.forEach(cell => {
+                        if (cell.editable) {
+                            const savedValue = this.currentAnswer.views[viewId].cells[cell.address] || '';
+                            html += `<td class="editable">
+                                <input type="text"
+                                       class="cell-input"
+                                       data-view="${viewId}"
+                                       data-cell="${cell.address}"
+                                       value="${escapeHtml(savedValue)}"
+                                       oninput="app.handleCellInput(event)">
+                            </td>`;
+                        } else {
+                            html += `<td class="readonly">${escapeHtml(cell.value)}</td>`;
+                        }
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody>';
+
+                html += '</table>';
+                return html;
+            }
+
+            renderReferences(references) {
+                let html = `
+                    <div class="section-header mt-3">
+                        <span>📚</span>
+                        <span>【 참고자료 】</span>
+                    </div>
+                    <div class="accordion">
+                `;
+
+                references.forEach((ref, index) => {
+                    const icon = ref.type === 'txt' ? '📄' : '📊';
+                    let contentHtml = '';
+
+                    if (ref.type === 'tabbed-table' && ref.sheets) {
+                        // 탭 형태의 다중 시트 참고자료
+                        contentHtml = this.renderTabbedTable(ref.sheets, `ref-${index}`);
+                    } else if (ref.type === 'table' && ref.tableData) {
+                        // 테이블 형태 참고자료
+                        contentHtml = this.renderReferenceTable(ref.tableData);
+                    } else {
+                        // 텍스트 형태 참고자료
+                        contentHtml = `<pre>${escapeHtml(ref.content || '')}</pre>`;
+                    }
+
+                    html += `
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="app.toggleAccordion(${index})" id="accordion-header-${index}">
+                                <div class="accordion-title">
+                                    <span>${icon}</span>
+                                    <span>${escapeHtml(ref.title)}</span>
+                                </div>
+                                <span class="accordion-icon">▶</span>
+                            </div>
+                            <div class="accordion-content" id="accordion-${index}">
+                                <div class="accordion-body">
+                                    ${contentHtml}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                return html;
+            }
+
+            renderTabbedTable(sheets, refId) {
+                const sheetNames = Object.keys(sheets);
+                if (sheetNames.length === 0) return '';
+
+                let html = '<div class="sheet-tabs-container">';
+
+                // 탭 버튼들
+                html += '<div class="sheet-tabs">';
+                sheetNames.forEach((sheetName, idx) => {
+                    const activeClass = idx === 0 ? 'active' : '';
+                    html += `<div class="sheet-tab ${activeClass}" onclick="app.switchSheet('${refId}', ${idx})" data-sheet-index="${idx}">${escapeHtml(sheetName)}</div>`;
+                });
+                html += '</div>';
+
+                // 시트 콘텐츠들
+                sheetNames.forEach((sheetName, idx) => {
+                    const sheet = sheets[sheetName];
+                    const activeClass = idx === 0 ? 'active' : '';
+                    html += `<div class="sheet-content ${activeClass}" id="${refId}-sheet-${idx}">`;
+                    html += this.renderReferenceTable(sheet);
+                    html += '</div>';
+                });
+
+                html += '</div>';
+                return html;
+            }
+
+            switchSheet(refId, sheetIndex) {
+                // 모든 탭에서 active 제거
+                const container = document.querySelector(`#${refId}-sheet-0`).parentElement;
+                const tabs = container.querySelectorAll('.sheet-tab');
+                const contents = container.querySelectorAll('.sheet-content');
+
+                tabs.forEach((tab, idx) => {
+                    if (idx === sheetIndex) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+
+                contents.forEach((content, idx) => {
+                    if (idx === sheetIndex) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+
+            renderReferenceTable(tableData) {
+                let html = '';
+
+                // 정보 표시 (있는 경우)
+                if (tableData.info) {
+                    html += `<div class="ref-table-info">${escapeHtml(tableData.info)}</div>`;
+                }
+
+                html += '<div class="ref-table-container"><table class="ref-table">';
+
+                // 헤더
+                if (tableData.headers) {
+                    html += '<thead><tr>';
+                    tableData.headers.forEach(header => {
+                        html += `<th>${escapeHtml(header)}</th>`;
+                    });
+                    html += '</tr></thead>';
+                }
+
+                // 데이터 행
+                if (tableData.rows) {
+                    html += '<tbody>';
+                    tableData.rows.forEach(row => {
+                        html += '<tr>';
+                        row.forEach(cell => {
+                            html += `<td>${escapeHtml(String(cell))}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody>';
+                }
+
+                html += '</table></div>';
+                return html;
+            }
+
+            toggleAccordion(index) {
+                const header = document.getElementById(`accordion-header-${index}`);
+                const content = document.getElementById(`accordion-${index}`);
+
+                if (header && content) {
+                    header.classList.toggle('active');
+                    content.classList.toggle('active');
+                }
+            }
+
+            handleCellInput(event) {
+                const input = event.target;
+                const viewId = input.dataset.view;
+                const cellAddress = input.dataset.cell;
+                const value = input.value;
+
+                if (!this.currentAnswer.views[viewId]) {
+                    this.currentAnswer.views[viewId] = { cells: {} };
+                }
+
+                this.currentAnswer.views[viewId].cells[cellAddress] = value;
+            }
+
+            saveAnswer(problemId) {
+                // Update text answer if exists
+                const textArea = document.getElementById('answer-text');
+                if (textArea) {
+                    this.currentAnswer.text = textArea.value;
+                }
+
+                const result = TBSBackend.submissions.save(problemId, this.currentAnswer);
+                this.showToast(result.message);
+            }
+
+            submitAnswer(problemId) {
+                // Check if at least one answer is provided
+                let hasAnswer = false;
+
+                // Check view answers
+                for (const viewId in this.currentAnswer.views) {
+                    const cells = this.currentAnswer.views[viewId].cells;
+                    if (Object.keys(cells).some(k => cells[k] && cells[k].trim())) {
+                        hasAnswer = true;
+                        break;
+                    }
+                }
+
+                // Check text answer
+                const textArea = document.getElementById('answer-text');
+                if (textArea && textArea.value.trim()) {
+                    hasAnswer = true;
+                    this.currentAnswer.text = textArea.value;
+                }
+
+                if (!hasAnswer) {
+                    alert('최소 1개 이상의 답안을 작성해주세요.');
+                    return;
+                }
+
+                if (!confirm('답변을 완료하시겠습니까?\n\n답변 완료 후에도 최종 제출 전까지는 다시 수정할 수 있습니다.')) {
+                    return;
+                }
+
+                // Save current answer
+                TBSBackend.submissions.save(problemId, this.currentAnswer);
+
+                // Mark as answered (not final submit)
+                const result = TBSBackend.submissions.markAnswered(problemId);
+
+                if (result.success) {
+                    this.stopAutoSave();
+                    this.showToast(result.message);
+                    setTimeout(() => {
+                        this.backToProblemList();
+                    }, 1500);
+                } else {
+                    alert(result.message);
+                }
+            }
+
+            finalSubmitAll() {
+                const canSubmit = TBSBackend.submissions.canFinalSubmit();
+
+                if (!canSubmit.canSubmit) {
+                    alert(canSubmit.reason);
+                    return;
+                }
+
+                if (!confirm('최종 제출하시겠습니까?\n\n⚠️ 최종 제출 후에는 모든 문제의 답안을 수정할 수 없습니다.\n\n이 작업은 되돌릴 수 없습니다.')) {
+                    return;
+                }
+
+                const result = TBSBackend.submissions.finalSubmit();
+
+                if (result.success) {
+                    this.showToast(result.message);
+                    setTimeout(() => {
+                        this.render();
+                    }, 1500);
+                } else {
+                    alert(result.message);
+                }
+            }
+
+            renderAdminDashboard() {
+                const currentUser = TBSBackend.auth.getCurrentUser();
+
+                if (!currentUser || currentUser.role !== 'admin') {
+                    return `
+                        <div class="container">
+                            <div class="card">
+                                <h2>접근 거부</h2>
+                                <p>관리자만 접근할 수 있는 페이지입니다.</p>
+                                <button class="btn btn-primary" onclick="app.logout()">
+                                    로그아웃
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const candidates = TBSBackend.admin.getCandidateList();
+                const weaknessStats = TBSBackend.admin.getWeaknessStats();
+
+                const totalCandidates = candidates.length;
+                const totalSubmitted = candidates.reduce((sum, c) => sum + c.submittedCount, 0);
+                const totalGraded = candidates.reduce((sum, c) => sum + c.gradedCount, 0);
+
+                const candidateRows = candidates.map(c => `
+                    <tr>
+                        <td>${escapeHtml(c.name)}</td>
+                        <td>${c.submittedCount} / ${c.totalProblems}</td>
+                        <td>${c.gradedCount} / ${c.submittedCount}</td>
+                        <td>${c.averageScore !== null ? c.averageScore.toFixed(1) : '-'}점</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="app.viewCandidateDetail('${c.id}')">
+                                상세보기
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                const weaknessList = Object.entries(weaknessStats)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([tag, count]) => `
+                        <div class="tag">${escapeHtml(tag)} (${count}회)</div>
+                    `).join('');
+
+                return `
+                    <div class="app-header">
+                        <div class="header-content">
+                            <h1 class="app-title">관리자 대시보드</h1>
+                            <div class="user-info">
+                                <span class="user-name">${escapeHtml(currentUser.name)}님</span>
+                                <button class="btn btn-primary btn-sm" onclick="app.goToProblemList()">
+                                    문제 풀기
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="app.logout()">
+                                    로그아웃
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="admin-header">
+                            <h2 class="card-title">전체 요약</h2>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-label">총 후보자 수</div>
+                                <div class="stat-value">${totalCandidates}명</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">총 제출 수</div>
+                                <div class="stat-value">${totalSubmitted}개</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">총 채점 수</div>
+                                <div class="stat-value">${totalGraded}개</div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <h3 class="card-title">취약 항목 TOP 5</h3>
+                            <div class="weakness-tags">
+                                ${weaknessList || '<p>데이터가 없습니다.</p>'}
+                            </div>
+                        </div>
+
+                        <div class="candidate-table">
+                            <h3 class="card-title">후보자 목록</h3>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>이름</th>
+                                            <th>제출 현황</th>
+                                            <th>채점 현황</th>
+                                            <th>평균 점수</th>
+                                            <th>작업</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${candidateRows}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderCandidateDetail(userId) {
+                const currentUser = TBSBackend.auth.getCurrentUser();
+
+                if (!currentUser || currentUser.role !== 'admin') {
+                    return;
+                }
+
+                const candidate = TBSBackend.admin.getCandidateDetail(userId);
+
+                if (!candidate) {
+                    this.showToast('후보자를 찾을 수 없습니다.');
+                    this.render();
+                    return;
+                }
+
+                const problemRows = candidate.problems.map(p => {
+                    let answerText = '-';
+                    let correctAnswerText = '';
+
+                    // 응시자 답안 표시
+                    if (p.answer) {
+                        if (p.answer.views) {
+                            const viewAnswers = Object.entries(p.answer.views)
+                                .map(([viewId, viewData]) => {
+                                    const cellEntries = Object.entries(viewData.cells || {});
+                                    if (cellEntries.length === 0) return '';
+                                    return `<strong>[${viewId}]</strong><br>` +
+                                           cellEntries.map(([addr, val]) => `${addr}: ${val}`).join('<br>');
+                                })
+                                .filter(v => v)
+                                .join('<br><br>');
+
+                            if (viewAnswers) {
+                                answerText = viewAnswers;
+                            }
+                        }
+                        if (p.answer.text) {
+                            const textAnswer = `<strong>[서술형]</strong><br>${escapeHtml(p.answer.text)}`;
+                            answerText = answerText === '-' ? textAnswer : answerText + '<br><br>' + textAnswer;
+                        }
+                    }
+
+                    // 정답 표시
+                    const correctAnswer = ANSWER_DATA[p.problemId];
+                    if (correctAnswer) {
+                        const correctViewAnswers = Object.entries(correctAnswer)
+                            .map(([viewId, viewData]) => {
+                                const cellEntries = Object.entries(viewData.cells || {});
+                                if (cellEntries.length === 0) return '';
+                                return `<strong>[${viewId}] ${viewData.description || ''}</strong><br>` +
+                                       cellEntries.map(([addr, val]) => `${addr}: ${val}`).join('<br>');
+                            })
+                            .filter(v => v)
+                            .join('<br><br>');
+                        if (correctViewAnswers) {
+                            correctAnswerText = correctViewAnswers;
+                        }
+                    }
+
+                    const weaknessTags = p.weaknessTags.map(tag =>
+                        `<span class="tag">${escapeHtml(tag)}</span>`
+                    ).join(' ');
+
+                    return `
+                        <tr>
+                            <td>${p.problemId}번</td>
+                            <td>${escapeHtml(p.problemTitle)}</td>
+                            <td>${p.submitted ? '제출완료' : '미제출'}</td>
+                            <td>${p.score !== null ? p.score + '점' : '-'}</td>
+                            <td>
+                                ${p.submitted && !p.graded ? `
+                                    <button class="btn btn-secondary btn-sm" onclick="app.manualGrade('${userId}', ${p.problemId})">
+                                        수동 채점
+                                    </button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                        ${p.submitted ? `
+                            <tr>
+                                <td colspan="5">
+                                    <div style="display: flex; gap: 20px;">
+                                        <div style="flex: 1; padding: 10px; background: #fff8e1; border-radius: 8px;">
+                                            <strong style="color: #f59e0b;">응시자 답안:</strong><br>
+                                            ${answerText}
+                                        </div>
+                                        <div style="flex: 1; padding: 10px; background: #e8f5e9; border-radius: 8px;">
+                                            <strong style="color: #16a34a;">정답:</strong><br>
+                                            ${correctAnswerText || '-'}
+                                        </div>
+                                    </div>
+                                    ${p.graded ? `
+                                        <div style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 8px;">
+                                            <strong>피드백:</strong> ${escapeHtml(p.feedback)}<br>
+                                            <strong>취약점:</strong> ${weaknessTags || '-'}
+                                        </div>
+                                    ` : ''}
+                                </td>
+                            </tr>
+                        ` : ''}
+                    `;
+                }).join('');
+
+                const app = document.getElementById('app');
+                app.innerHTML = `
+                    <div class="app-header">
+                        <div class="header-content">
+                            <h1 class="app-title">관리자 대시보드</h1>
+                            <div class="user-info">
+                                <span class="user-name">${escapeHtml(currentUser.name)}님</span>
+                                <button class="btn btn-secondary btn-sm" onclick="app.logout()">
+                                    로그아웃
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <button class="btn btn-secondary btn-sm mb-2" onclick="app.render()">
+                            ← 대시보드로
+                        </button>
+
+                        <div class="card">
+                            <h2 class="card-title">${escapeHtml(candidate.name)} 상세 정보</h2>
+
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>문제</th>
+                                            <th>제목</th>
+                                            <th>제출 상태</th>
+                                            <th>점수</th>
+                                            <th>작업</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${problemRows}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Event Handlers
+            attachLoginHandlers() {
+                const form = document.getElementById('loginForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const userId = document.getElementById('userId').value;
+                    const password = document.getElementById('password').value;
+                    const result = TBSBackend.auth.login(userId, password);
+
+                    if (result.success) {
+                        this.render();
+                    } else {
+                        const errorEl = document.getElementById('loginError');
+                        errorEl.textContent = result.message;
+                        errorEl.classList.add('show');
+                    }
+                });
+            }
+
+            attachProblemListHandlers() {
+                // Handlers attached via onclick in template
+            }
+
+            attachProblemViewHandlers() {
+                // Handlers attached via onclick in template
+
+                // 워드 문서의 자동 계산 필드 초기화
+                const wordDocs = document.querySelectorAll('.word-document[data-view-id]');
+                wordDocs.forEach(doc => {
+                    const viewId = doc.dataset.viewId;
+                    if (viewId) {
+                        this.updateWordDocCalcFields(viewId);
+                    }
+                });
+
+                // 정산서 양식 초기화
+                const settlementForms = document.querySelectorAll('.settlement-form[data-view-id]');
+                settlementForms.forEach(form => {
+                    const viewId = form.dataset.viewId;
+                    if (viewId) {
+                        this.updateSettlementCalc(viewId);
+                    }
+                });
+            }
+
+            attachAdminHandlers() {
+                // Handlers attached via onclick in template
+            }
+
+            // Actions
+            logout() {
+                TBSBackend.auth.logout();
+                this.currentView = 'login';
+                this.render();
+            }
+
+            viewProblem(problemId) {
+                const accessCheck = TBSBackend.submissions.canAccess(problemId);
+                this.currentProblemId = problemId;
+                this.currentView = 'problemView';
+                this.currentAnswer = {
+                    views: {},
+                    text: ''
+                };
+
+                // Load saved answer
+                const submission = TBSBackend.submissions.get(problemId);
+                if (submission && submission.answer) {
+                    this.currentAnswer = submission.answer;
+                }
+
+                this.render();
+
+                if (accessCheck.canAccess) {
+                    this.startAutoSave(problemId);
+                }
+            }
+
+            backToProblemList() {
+                this.stopAutoSave();
+                this.currentView = 'problemList';
+                this.currentProblemId = null;
+                this.currentAnswer = {
+                    views: {},
+                    text: ''
+                };
+                this.render();
+            }
+
+            goToProblemList() {
+                this.currentView = 'problemList';
+                this.render();
+            }
+
+            goToAdminDashboard() {
+                this.currentView = null;  // null이면 관리자 대시보드 표시
+                this.render();
+            }
+
+            startAutoSave(problemId) {
+                this.stopAutoSave();
+                this.autoSaveInterval = setInterval(() => {
+                    const accessCheck = TBSBackend.submissions.canAccess(problemId);
+                    if (accessCheck.canAccess) {
+                        // Silent auto-save
+                        const textArea = document.getElementById('answer-text');
+                        if (textArea) {
+                            this.currentAnswer.text = textArea.value;
+                        }
+                        TBSBackend.submissions.save(problemId, this.currentAnswer);
+                    } else {
+                        this.stopAutoSave();
+                    }
+                }, 30000); // 30 seconds
+            }
+
+            stopAutoSave() {
+                if (this.autoSaveInterval) {
+                    clearInterval(this.autoSaveInterval);
+                    this.autoSaveInterval = null;
+                }
+            }
+
+            viewCandidateDetail(userId) {
+                this.renderCandidateDetail(userId);
+            }
+
+            manualGrade(userId, problemId) {
+                const score = prompt('점수를 입력하세요 (0-100):');
+                if (score === null) return;
+
+                const numScore = parseInt(score);
+                if (isNaN(numScore) || numScore < 0 || numScore > 100) {
+                    alert('유효한 점수를 입력하세요.');
+                    return;
+                }
+
+                const tags = prompt('취약점 태그를 입력하세요 (쉼표로 구분):');
+                const feedback = prompt('피드백을 입력하세요:');
+
+                const weaknessTags = tags ? tags.split(',').map(t => t.trim()).filter(t => t) : [];
+
+                TBSBackend.admin.saveGrade(userId, problemId, numScore, weaknessTags, feedback || '');
+                this.showToast('채점 결과가 저장되었습니다.');
+                this.viewCandidateDetail(userId);
+            }
+
+            showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            showLoading() {
+                document.getElementById('loadingSpinner').classList.add('show');
+            }
+
+            hideLoading() {
+                document.getElementById('loadingSpinner').classList.remove('show');
+            }
+        }
+
+        // Initialize App
+        let app;
+        window.addEventListener('DOMContentLoaded', () => {
+            app = new App();
+            window.app = app;
+
+            // Prevent back button from showing submitted problem
+            window.addEventListener('popstate', () => {
+                if (app.currentView === 'problemView' && app.currentProblemId) {
+                    const accessCheck = TBSBackend.submissions.canAccess(app.currentProblemId);
+                    if (!accessCheck.canAccess) {
+                        app.backToProblemList();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

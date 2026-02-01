@@ -1,0 +1,23 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+GITHUB_PAT*.env
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+~$*
+nul
+*.tmp
+
+# Claude
+.claude/
+
+# Playwright
+.playwright-mcp/

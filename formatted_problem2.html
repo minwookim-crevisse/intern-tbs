@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문제 2번 - 미디어 사업 사용료 정산서 작성</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            color: #4B5563;
+            background: #F9FAFB;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #3B82F6;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: #FFFFFF;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-content {
+            padding: 20px;
+            background: #F9FAFB;
+            border-radius: 0 0 6px 6px;
+            margin-bottom: 24px;
+        }
+
+        .context-box {
+            background: #EFF6FF;
+            border-left: 4px solid #3B82F6;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .requirement-box {
+            background: #FEF3C7;
+            border-left: 4px solid #F59E0B;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .requirement-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .requirement-item {
+            padding: 12px 16px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .requirement-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: #F59E0B;
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+
+        .revenue-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 6px;
+            padding: 14px;
+            margin: 10px 0;
+        }
+
+        .revenue-title {
+            font-weight: 700;
+            color: #111827;
+            font-size: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .revenue-desc {
+            font-size: 13px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 12px 0;
+        }
+
+        .bullet-list li {
+            padding-left: 28px;
+            position: relative;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .bullet-list li:before {
+            content: "▶";
+            color: #3B82F6;
+            position: absolute;
+            left: 8px;
+            font-size: 10px;
+        }
+
+        .highlight {
+            background: #FEF3C7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .strong {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .divider {
+            border: none;
+            border-top: 2px dashed #D1D5DB;
+            margin: 24px 0;
+        }
+
+        .info-badge {
+            display: inline-block;
+            background: #DBEAFE;
+            color: #1E40AF;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
+
+            .section-header {
+                font-size: 16px;
+                padding: 10px 16px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">문제 2번: 미디어 사업 사용료 정산서 작성</h1>
+
+        <!-- 문제 지문 -->
+        <div class="section-header" role="heading" aria-level="2">
+            <span>📋</span>
+            <span>【 문제 】</span>
+        </div>
+
+        <div class="section-content">
+            <div class="context-box">
+                <p style="margin-bottom: 16px;">
+                    <span class="strong">당신의 역할:</span> 사업지원 인턴으로,
+                    <span class="highlight">미디어 사업의 월별 사용료(3월분)</span>를 계산(정산)하는 업무를 맡고 있습니다.
+                </p>
+
+                <p style="margin-bottom: 20px; font-size: 15px; font-weight: 600; color: #374151;">
+                    미디어 사업 사용료 구성:
+                </p>
+
+                <div class="revenue-card">
+                    <div class="revenue-title">
+                        <span>💰</span>
+                        <span>광고집행 매출</span>
+                    </div>
+                    <div class="revenue-desc">
+                        광고채널에서 확인된 <span class="strong">광고집행비용</span>을 기준으로,
+                        계약된 <span class="strong">수수료(%)</span>를 반영해 산출한 금액
+                    </div>
+                </div>
+
+                <div class="revenue-card">
+                    <div class="revenue-title">
+                        <span>🎨</span>
+                        <span>광고소재 매출</span>
+                    </div>
+                    <div class="revenue-desc">
+                        광고집행담당자가 확인해 준 <span class="strong">광고소재 판매/제작 매출</span> 금액
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div style="padding: 12px 0;">
+                <p style="font-size: 15px; line-height: 1.7;">
+                    당신은 <span class="strong">광고집행담당자의 협조</span>를 받아
+                    <span class="highlight">3월 사용료 정산서</span>를 작성하고자 합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 요구사항 -->
+        <div class="section-header" role="heading" aria-level="2">
+            <span>✅</span>
+            <span>【 요구사항 】</span>
+        </div>
+
+        <div class="requirement-box">
+            <div class="requirement-title">
+                <span>⚠️</span>
+                <span>다음 작업을 수행해주세요</span>
+            </div>
+
+            <div class="requirement-item">
+                <div style="display: flex; align-items: flex-start;">
+                    <span class="requirement-number">1</span>
+                    <div style="flex: 1;">
+                        <p style="font-weight: 600; color: #111827; margin-bottom: 6px;">
+                            정산 항목 작성
+                        </p>
+                        <p style="font-size: 14px; color: #4B5563; line-height: 1.7;">
+                            광고채널에서 <span class="highlight">3월 광고집행비용 데이터를 추출</span>하고,
+                            수수료를 반영한 <span class="strong">광고집행 매출</span>과
+                            <span class="strong">광고소재 매출</span>을 각각 집계하여
+                            정산 항목(정산서)을 작성해 주세요.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="requirement-item">
+                <div style="display: flex; align-items: flex-start;">
+                    <span class="requirement-number">2</span>
+                    <div style="flex: 1;">
+                        <p style="font-weight: 600; color: #111827; margin-bottom: 6px;">
+                            세금계산서 발행 금액 계산
+                        </p>
+                        <p style="font-size: 14px; color: #4B5563; line-height: 1.7;">
+                            완성된 정산서 금액을 기준으로, 고객에게 발행할
+                            <span class="highlight">세금계산서 발행 금액을 입력</span>해 주세요.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 안내사항 -->
+        <div style="margin-top: 32px; padding: 16px; background: #F3F4F6; border-radius: 6px; border: 1px solid #E5E7EB;">
+            <p style="font-size: 13px; color: #6B7280; line-height: 1.6;">
+                <span class="info-badge">📌 안내</span>
+                <br>
+                • 아래 <strong>[보기]</strong>에서 정산서 양식을 작성하세요<br>
+                • <strong>[참고자료]</strong> 섹션을 펼쳐 필요한 정보를 확인하세요<br>
+                • 광고집행비용 데이터, 수수료율, 광고소재 매출 정보를 활용하세요
+            </p>
+        </div>
+    </div>
+</body>
+</html>
