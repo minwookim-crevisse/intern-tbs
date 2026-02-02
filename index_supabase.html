@@ -1525,14 +1525,14 @@ QT-00001 일단가 1,085 * 17일 = 18,445원`
                         title: '참고자료 #3-2: 3월 사용료 정산이력',
                         type: 'tabbed-table',
                         sheets: {
-                            '정산대장': {
+                            '정산대장(3월 사용료)': {
                                 info: '정산일자: 2026-04-05 | 부가서비스 이용기간: 2026-03-01 ~ 2026-03-31',
                                 headers: ['고객코드', '고객명', '구독시작일', '구독종료일', '펀드레이징 에디션', '커뮤니케이션 에디션', '확장서비스', '확장사용량', '부가서비스(청구)', '부가서비스(메시지, 인증)', '메시지 충전금(기초)', '당기 충전액', '메시지청구금액', '메시지 충전금(기말)', '최종청구금액'],
                                 rows: [
                                     ['abc', '사단법인 abc 재단', '2026-03-01', '2026-03-31', '33,000', '82,500', '495,000', '48,190', '250,000', '3,000,000', '10,000,000', '-', '0', '7,000,000', '908,690']
                                 ]
                             },
-                            '변경대장': {
+                            '요청이력': {
                                 info: '고객코드: ABC | 고객명: 사단법인 ABC 재단',
                                 headers: ['고객코드', '고객명', '변경유형', '기존', '변경', '비고'],
                                 rows: [
@@ -1540,7 +1540,7 @@ QT-00001 일단가 1,085 * 17일 = 18,445원`
                                     ['ABC', '사단법인 ABC 재단', '확장사용량', 'QT-00001 1개', 'QT-00001 2개', '14일동안 추가사용함에 따라 15,190원 부과']
                                 ]
                             },
-                            '구독목록': {
+                            '구독이력(3월 사용료)': {
                                 info: '고객코드: abc | 고객명: 사단법인 abc 재단',
                                 headers: ['상품코드', '상품명', '구독시작일', '구독종료일', '단가', '수량'],
                                 rows: [
@@ -2369,10 +2369,12 @@ N사
                         .single();
 
                     if (existing) {
+                        // 기존 is_answered 상태 유지
+                        const isAnswered = existing.answers?.is_answered || false;
                         const { error } = await supabaseClient
                             .from('submissions')
                             .update({
-                                answers: { content: answer },
+                                answers: { content: answer, is_answered: isAnswered },
                                 last_saved_at: getCurrentTimestamp()
                             })
                             .eq('user_id', currentUser.id)
@@ -2385,7 +2387,7 @@ N사
                             .insert({
                                 user_id: currentUser.id,
                                 problem_id: problemId,
-                                answers: { content: answer },
+                                answers: { content: answer, is_answered: false },
                                 is_submitted: false,
                                 last_saved_at: getCurrentTimestamp(),
                                 created_at: getCurrentTimestamp()
@@ -2394,7 +2396,7 @@ N사
                         if (error) throw error;
                     }
 
-                    return { success: true, message: '저장되었습니다.' };
+                    return { success: true, message: '임시저장 되었습니다.' };
 
                 } catch (err) {
                     console.error('답안 저장 오류:', err);
@@ -2402,7 +2404,7 @@ N사
                 }
             },
 
-            async markAnswered(problemId) {
+            async markAnswered(problemId, answer) {
                 const currentUser = await SupabaseAuthModule.getCurrentUser();
                 if (!currentUser) return { success: false, message: '로그인이 필요합니다.' };
                 if (await this.isSubmitted(problemId)) {
@@ -2417,11 +2419,34 @@ N사
                         .eq('problem_id', problemId)
                         .single();
 
-                    if (!existing) {
-                        return { success: false, message: '저장된 답안이 없습니다.' };
+                    if (existing) {
+                        // 기존 답안이 있으면 업데이트하고 is_answered를 true로 설정
+                        const { error } = await supabaseClient
+                            .from('submissions')
+                            .update({
+                                answers: { content: answer, is_answered: true },
+                                last_saved_at: getCurrentTimestamp()
+                            })
+                            .eq('user_id', currentUser.id)
+                            .eq('problem_id', problemId);
+
+                        if (error) throw error;
+                    } else {
+                        // 새로운 답안 생성하고 is_answered를 true로 설정
+                        const { error } = await supabaseClient
+                            .from('submissions')
+                            .insert({
+                                user_id: currentUser.id,
+                                problem_id: problemId,
+                                answers: { content: answer, is_answered: true },
+                                is_submitted: false,
+                                last_saved_at: getCurrentTimestamp(),
+                                created_at: getCurrentTimestamp()
+                            });
+
+                        if (error) throw error;
                     }
 
-                    // 답변 완료는 더 이상 별도 단계가 아니므로 성공 반환
                     return { success: true, message: '답변이 완료되었습니다. 목록에서 다시 수정할 수 있습니다.' };
 
                 } catch (err) {
@@ -2475,9 +2500,9 @@ N사
                     const unansweredProblems = [];
                     for (const problem of problems) {
                         const submission = (submissions || []).find(s => s.problem_id === problem.id);
-                        // 답안이 있는지 확인 (answers 객체에 content가 있어야 함)
-                        const hasAnswer = submission && submission.answers && submission.answers.content;
-                        if (!hasAnswer) {
+                        // 답변 완료 버튼을 눌렀는지 확인 (is_answered가 true여야 함)
+                        const isAnswered = submission && submission.answers && submission.answers.is_answered === true;
+                        if (!isAnswered) {
                             unansweredProblems.push(problem.id);
                         }
                     }
@@ -2540,8 +2565,8 @@ N사
                         .eq('problem_id', problemId)
                         .single();
 
-                    // answers 객체에 content가 있으면 답변한 것으로 간주
-                    return data?.answers?.content ? true : false;
+                    // answers 객체에 is_answered가 true인 경우만 답변완료로 간주
+                    return data?.answers?.is_answered === true;
 
                 } catch (err) {
                     return false;
@@ -2566,7 +2591,7 @@ N사
                         userId: data.user_id,
                         problemId: data.problem_id,
                         answer: data.answers?.content || '',
-                        isAnswered: data.answers?.content ? true : false,
+                        isAnswered: data.answers?.is_answered === true,
                         isFinalSubmitted: data.is_submitted === true,
                         submittedAt: data.submitted_at,
                         lastSavedAt: data.last_saved_at
@@ -2800,7 +2825,7 @@ N사
 
             submissions: {
                 save: (problemId, answer) => SupabaseSubmissionModule.saveAnswer(problemId, answer),
-                markAnswered: (problemId) => SupabaseSubmissionModule.markAnswered(problemId),
+                markAnswered: (problemId, answer) => SupabaseSubmissionModule.markAnswered(problemId, answer),
                 finalSubmit: () => SupabaseSubmissionModule.finalSubmit(),
                 canFinalSubmit: () => SupabaseSubmissionModule.canFinalSubmit(),
                 isFinalSubmitted: (problemId) => SupabaseSubmissionModule.isFinalSubmitted(problemId),
@@ -3901,11 +3926,8 @@ N사
                     return;
                 }
 
-                // Save current answer
-                await TBSBackend.submissions.save(problemId, this.currentAnswer);
-
-                // Mark as answered (not final submit)
-                const result = await TBSBackend.submissions.markAnswered(problemId);
+                // Mark as answered (saves the answer and sets is_answered flag)
+                const result = await TBSBackend.submissions.markAnswered(problemId, this.currentAnswer);
 
                 if (result.success) {
                     this.stopAutoSave();
